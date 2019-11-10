@@ -1,0 +1,10 @@
+{
+    "jslint.enable": false,
+    "tslint.jsEnable": true,
+    "typescript.implementationsCodeLens.enabled": true,
+    "typescript.locale": "it",
+    "typescript.referencesCodeLens.enabled": true,
+    "mochaExplorer.exit": true,
+    "mochaExplorer.files": ["test/**/*.js","test/**/*.ts"],
+    "mochaExplorer.require": "ts-node/register"
+}

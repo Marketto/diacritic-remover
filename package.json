@@ -1,0 +1,36 @@
+{
+  "name": "@marketto/diacritic-remover",
+  "version": "1.0.0",
+  "description": "Tool to replace diacritics in strings",
+  "main": "dist/diacritic-mapper.js",
+  "module": "dist/diacritic-mapper.es.js",
+  "browser": "dist/diacritic-mapper.bundle.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "^4.2.4",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.12.7",
+    "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
+    "rollup": "^1.26.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript2": "^0.24.3",
+    "ts-node": "^8.4.1",
+    "tslint": "^6.0.0-beta0",
+    "typescript": "^3.7.2"
+  },
+  "scripts": {
+    "build": "npx rollup -c",
+    "lint": "npx tslint -c tslint.json \"src/**/*.ts\"",
+    "lint-fix": "npx tslint -c tslint.json \"src/**/*.ts\" --fix",
+    "test": "cross-env TS_NODE_FILES=true mocha --exit --require ts-node/register --colors test/**/*.ts",
+    "coverage": "nyc npm run test"
+  },
+  "author": "Marco Ricupero <marco.ricupero@gmail.com>",
+  "license": "MIT"
+}
