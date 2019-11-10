@@ -19,20 +19,14 @@ describe('Diacritic Matcher', () => {
         expect(diacriticRemover.matcher.i).to.include('ì');
     });
 });
+
 describe('Diacritic Insensitive Matcher', () => {
     it ('Should find deacritics', () => {
         const matcherO = diacriticRemover.matcher.o + diacriticRemover.matcher.O;
         expect(diacriticRemover.insensitiveMatcher.o).to.be.equal(matcherO);
     });
 });
-describe('Diacritic matcherBy', () => {
-    it ('Should match a single char', () => {
-        expect(diacriticRemover.matcherBy(/^e$/)).to.be.equal(diacriticRemover.matcher.e);
-    });
-    it ('Should match a set of chars', () => {
-        expect(diacriticRemover.matcherBy(/^[au]$/)).to.be.equal(diacriticRemover.matcher.a+diacriticRemover.matcher.u);
-    });
-});
+
 describe('Diacritic Validator', () => {
     it ('Should validate à with a', () => {
         expect(diacriticRemover.validator.a).to.be.a('RegExp');
@@ -43,6 +37,7 @@ describe('Diacritic Validator', () => {
         expect(diacriticRemover.validator.c.test('c')).to.be.true;
     });
 });
+
 describe('Diacritic Insensitive Validator', () => {
     it ('Should validate à and À with a or A', () => {
         expect(diacriticRemover.insensitiveValidator.a).to.be.a('RegExp');
@@ -60,5 +55,21 @@ describe('Diacritic Insensitive Validator', () => {
         expect(diacriticRemover.insensitiveValidator.C).to.be.a('RegExp');
         expect(diacriticRemover.insensitiveValidator.C.test('c')).to.be.true;
         expect(diacriticRemover.insensitiveValidator.C.test('C')).to.be.true;
+    });
+});
+
+describe('Diacritic matcherBy', () => {
+    it ('Should match a single char', () => {
+        expect(diacriticRemover.matcherBy(/^e$/)).to.be.equal(diacriticRemover.matcher.e);
+    });
+    it ('Should match a set of chars', () => {
+        expect(diacriticRemover.matcherBy(/^[au]$/)).to.be.equal(diacriticRemover.matcher.a+diacriticRemover.matcher.u);
+    });
+});
+
+
+describe('Diacritic replace', () => {
+    it ('Should replace diacritics from àççèß and return access', () => {
+        expect(diacriticRemover.replace('àççèß')).to.be.equal('access');
     });
 });

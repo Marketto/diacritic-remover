@@ -6,6 +6,8 @@ import DiacriticValidatorHandler from './diacritic-validator-handler.class';
 import DiacriticInsensitiveValidatorHandler from './diacritic-insensitive-validator-handler.class';
 
 class DiacriticMapperCore implements DiacriticMapperInterface {
+
+    [key:string]: string|any;
     public matcher: DiacriticSetInterface;
 
     public insensitiveMatcher: DiacriticSetInterface;
@@ -38,6 +40,10 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
             .filter(key => regexp.test(key))
             .map(key => this.matcher[key] || '')
             .join('');
+    }
+
+    public replace(text: string): string {
+        return text.replace(/./g, (char: string) => this[char]);
     }
 }
 

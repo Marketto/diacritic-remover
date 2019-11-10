@@ -2,6 +2,8 @@ import DiacriticSetInterface from './diacritic-set.interface';
 import DiacriticValidatorSetInterface from './diacritic-validator-set.interface';
 
 interface DiacriticMapperInterface {
+
+    [key:string]: string|any;
     matcher: DiacriticSetInterface;
     insensitiveMatcher: DiacriticSetInterface;
     validator: DiacriticValidatorSetInterface;
@@ -9,7 +11,7 @@ interface DiacriticMapperInterface {
 
     matcherBy(regexp: RegExp): string;
 
-    [key:string]: string|any;
+    replace(text: string): string;
 }
 
 export default DiacriticMapperInterface;
