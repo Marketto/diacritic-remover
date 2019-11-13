@@ -45,6 +45,28 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
     public replace(text: string): string {
         return text.replace(/./g, (char: string) => this[char]);
     }
+
+    /**
+     * Check if the given string is uppercase
+     *
+     * @param {string} [text=''] string to check
+     * @returns {boolean} true if text is uppercase
+     * @memberof DiacriticMapperCore
+     */
+    public isUpperCase(text: string = ''): boolean {
+        return text.toUpperCase() === text;
+    }
+
+    /**
+     * Check if the given string is lowercase
+     *
+     * @param {string} [text=''] string to check
+     * @returns {boolean} true if text is lowercase
+     * @memberof DiacriticMapperCore
+     */
+    public isLowerCase(text: string = ''): boolean {
+        return text.toLowerCase() === text;
+    }
 }
 
 export default DiacriticMapperCore;

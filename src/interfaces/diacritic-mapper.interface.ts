@@ -12,6 +12,10 @@ interface DiacriticMapperInterface {
     matcherBy(regexp: RegExp): string;
 
     replace(text: string): string;
+
+    isUpperCase(text: string): boolean;
+
+    isLowerCase(text: string): boolean;
 }
 
 export default DiacriticMapperInterface;
