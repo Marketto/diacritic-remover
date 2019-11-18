@@ -1,13 +1,14 @@
 import DiacriticAbstractHandler from './diacritic-abstract-handler.class';
 import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
 
-class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
+class DiacriticMatcherHandler extends DiacriticAbstractHandler {
     protected diacriticTrap(target: DiacriticMapperInterface, char: string): string {
         const diacritics = target.dictionary[char.toLowerCase()];
-        return diacritics ? (
-            diacritics + diacritics.toUpperCase()
-        ) : char;
+        if (diacritics) {
+            return target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;
+        }
+        return char;
     }
 }
 
-export default DiacriticInsensitiveMatcherHandler;
+export default DiacriticMatcherHandler;

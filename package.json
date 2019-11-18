@@ -2,9 +2,9 @@
   "name": "@marketto/diacritic-remover",
   "version": "1.0.0",
   "description": "Tool to replace diacritics in strings",
-  "main": "dist/diacritic-mapper.js",
-  "module": "dist/diacritic-mapper.es.js",
-  "browser": "dist/diacritic-mapper.bundle.js",
+  "main": "dist/diacritic-remover.js",
+  "module": "dist/diacritic-remover.es.js",
+  "browser": "dist/diacritic-remover.bundle.js",
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.2.4",

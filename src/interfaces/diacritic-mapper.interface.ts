@@ -4,6 +4,8 @@ import DiacriticValidatorSetInterface from './diacritic-validator-set.interface'
 interface DiacriticMapperInterface {
 
     [key:string]: string|any;
+    dictionary: DiacriticSetInterface;
+
     matcher: DiacriticSetInterface;
     insensitiveMatcher: DiacriticSetInterface;
     validator: DiacriticValidatorSetInterface;

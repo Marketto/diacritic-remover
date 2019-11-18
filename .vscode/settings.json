@@ -6,5 +6,6 @@
     "typescript.referencesCodeLens.enabled": true,
     "mochaExplorer.exit": true,
     "mochaExplorer.files": ["test/**/*.js","test/**/*.ts"],
-    "mochaExplorer.require": "ts-node/register"
+    "mochaExplorer.require": "ts-node/register",
+    "jshint.enable": false
 }

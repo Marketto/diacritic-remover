@@ -7,8 +7,8 @@ class DiacriticRemoverHandler extends DiacriticAbstractHandler {
         const upperCase: boolean = target.isUpperCase(char);
         const lowerCaseChar = char.toLowerCase();
 
-        const plainChar = Object.keys(target.matcher)
-            .find(c => isString(target.matcher[c]) && target.matcher[c].includes(lowerCaseChar));
+        const plainChar = Object.keys(target.dictionary)
+            .find(c => isString(target.dictionary[c]) && target.dictionary[c].includes(lowerCaseChar));
         if (upperCase && plainChar) {
             return plainChar.toUpperCase();
         }

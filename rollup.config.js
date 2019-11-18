@@ -5,7 +5,7 @@ import { terser } from 'rollup-plugin-terser';
 import builtins from 'rollup-plugin-node-builtins';
 
 export default {
-    input: 'src/diacritic-mapper.ts',
+    input: 'src/diacritic-remover.ts',
     output: [
         {
             file: pkg.main,

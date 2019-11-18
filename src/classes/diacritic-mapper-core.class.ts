@@ -1,6 +1,7 @@
 import DiacriticSetInterface from '../interfaces/diacritic-set.interface';
 import DiacriticValidatorSetInterface from '../interfaces/diacritic-validator-set.interface';
 import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
+import DiacriticMatcherHandler from './diacritic-matcher-handler.class';
 import DiacriticInsensitiveMatcherHandler from './diacritic-insensitive-matcher-handler.class';
 import DiacriticValidatorHandler from './diacritic-validator-handler.class';
 import DiacriticInsensitiveValidatorHandler from './diacritic-insensitive-validator-handler.class';
@@ -8,6 +9,8 @@ import DiacriticInsensitiveValidatorHandler from './diacritic-insensitive-valida
 class DiacriticMapperCore implements DiacriticMapperInterface {
 
     [key:string]: string|any;
+
+    public dictionary: DiacriticSetInterface;
     public matcher: DiacriticSetInterface;
 
     public insensitiveMatcher: DiacriticSetInterface;
@@ -17,7 +20,7 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
     public insensitiveValidator: DiacriticValidatorSetInterface;
 
     public constructor(dictionaries: DiacriticSetInterface[]) {
-        const dictionary: DiacriticSetInterface = dictionaries.reduce((accumulator: DiacriticSetInterface, currentDict: DiacriticSetInterface) => {
+        const dictionary = dictionaries.reduce((accumulator: DiacriticSetInterface, currentDict: DiacriticSetInterface) => {
             Object.entries(currentDict).forEach(([letter, diacritics]) => {
                 if (letter in accumulator) {
                     const newDiacritics = diacritics.split('').filter(l => !accumulator[letter].includes(l)).join('');
@@ -29,17 +32,23 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
             return accumulator;
         }, {});
 
-        this.matcher = Object.freeze(dictionary);
+        this.dictionary = Object.freeze(dictionary);
+        this.matcher = new Proxy(this, new DiacriticMatcherHandler());
         this.insensitiveMatcher = new Proxy(this, new DiacriticInsensitiveMatcherHandler());
         this.validator = new Proxy(this, new DiacriticValidatorHandler());
         this.insensitiveValidator = new Proxy(this, new DiacriticInsensitiveValidatorHandler());
     }
 
     public matcherBy(regexp: RegExp): string {
-        return Object.keys(this.matcher)
+        const lowerCase = Object.keys(this.dictionary)
             .filter(key => regexp.test(key))
-            .map(key => this.matcher[key] || '')
-            .join('');
+            .map(key => this.dictionary[key]);
+
+        const upperCase = Object.keys(this.dictionary)
+            .filter(key => regexp.test(key.toUpperCase()))
+            .map(key => this.dictionary[key.toUpperCase()].toUpperCase());
+
+        return [...lowerCase, ...upperCase].join('');
     }
 
     public replace(text: string): string {

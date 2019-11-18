@@ -1,8 +1,7 @@
 import { expect } from 'chai';
 import DiacriticRemover from '../src/diacritic-remover';
-import * as dictionary from '../i18n/all.json';
 
-const diacriticRemover = new DiacriticRemover(dictionary);
+const diacriticRemover = new DiacriticRemover();
 
 describe('Diacritic Remover Handler', () => {
     it ('Should remove deacritic', () => {
@@ -22,8 +21,11 @@ describe('Diacritic Matcher', () => {
 
 describe('Diacritic Insensitive Matcher', () => {
     it ('Should find deacritics', () => {
-        const matcherO = diacriticRemover.matcher.o + diacriticRemover.matcher.O;
-        expect(diacriticRemover.insensitiveMatcher.o).to.be.equal(matcherO);
+        const matchero = diacriticRemover.matcher.o;
+        const matcherO = diacriticRemover.matcher.O;
+        expect(matchero).not.to.be.undefined;
+        expect(matcherO).not.to.be.undefined;
+        expect(diacriticRemover.insensitiveMatcher.o).to.be.equal(matchero + matcherO);
     });
 });
 
