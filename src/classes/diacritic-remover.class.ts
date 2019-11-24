@@ -2,7 +2,7 @@ import DiacriticRemoverHandler from './diacritic-remover-handler.class';
 import DiacriticSetInterface from '../interfaces/diacritic-set.interface';
 import DiacriticMapperCore from './diacritic-mapper-core.class';
 
-import I18N_ALL from '../../i18n/all';
+import I18N_ALL from '../i18n/i18n-all.const';
 
 class DiacriticRemover extends DiacriticMapperCore{
     [letter: string]: string|any;

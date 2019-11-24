@@ -1,0 +1,12 @@
+examples
+test
+sonar-project.properties
+.nyc_output
+.vscode
+coverage
+docs
+scripts
+CODE_OF_CONDUCT.md
+demo
+.github
+i18n/*.json
