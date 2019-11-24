@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import DiacriticRemover from '../src/diacritic-remover';
-import * as i18n_it from '../src/i18n/it.json';
+import * as i18n_it from '../i18n/it.json';
 
 describe('Diacritic Remover Handler', () => {
     const diacriticRemover = new DiacriticRemover(i18n_it);

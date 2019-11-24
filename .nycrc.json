@@ -1,17 +1,16 @@
 {
-    "nyc": {
-        "all": true,
-        "include": [
-            "src/**/*.js"
-        ],
-        "exclude": [
-            "node_modules",
-            "dist",
-            "docs",
-            "coverage"
-        ],
-        "reporter": [
-            "lcovonly"
-        ]
-    }
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true,
+    "check-coverage": true,
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "**/*.js",
+        "**/*.test.*"
+    ],
+    "reporter": [
+        "text",
+        "lcovonly"
+    ]
 }

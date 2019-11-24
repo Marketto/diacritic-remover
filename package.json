@@ -7,7 +7,8 @@
   "browser": "dist/diacritic-remover.bundle.js",
   "dependencies": {},
   "devDependencies": {
-    "@types/chai": "^4.2.4",
+    "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@types/chai": "^4.2.5",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.12.7",
     "chai": "^4.2.0",
@@ -29,8 +30,8 @@
     "build": "node ./scripts/i18n-all.js && npx rollup -c",
     "lint": "npx tslint -c tslint.json \"src/**/*.ts\"",
     "lint-fix": "npx tslint -c tslint.json \"src/**/*.ts\" --fix",
-    "test": "cross-env TS_NODE_FILES=true mocha --exit --require ts-node/register --colors test/**/*.ts",
-    "coverage": "nyc npm run test"
+    "test": "npx mocha",
+    "coverage": "npx nyc npm run test"
   },
   "author": "Marco Ricupero <marco.ricupero@gmail.com>",
   "license": "MIT"
