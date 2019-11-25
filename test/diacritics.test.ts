@@ -67,11 +67,20 @@ describe('Diacritic matcherBy', () => {
     it ('Should match a set of chars', () => {
         expect(diacriticRemover.matcherBy(/^[au]$/)).to.be.equal(diacriticRemover.matcher.a+diacriticRemover.matcher.u);
     });
+    it ('Should match a range', () => {
+        expect(diacriticRemover.matcherBy(/^[a-z]/i)).to.be.ok;
+    });
 });
 
 describe('Diacritic replace', () => {
     it ('Should replace diacritics from àççèß and return access', () => {
         expect(diacriticRemover.replace('àççèß')).to.be.equal('access');
+    });
+    it ('Should return chars not matching diacritics', () => {
+        expect(diacriticRemover.replace('sz33k')).to.be.equal('sz33k');
+    });
+    it ('Should return "" for ""', () => {
+        expect(diacriticRemover.replace('')).to.be.equal('');
     });
 });
 
