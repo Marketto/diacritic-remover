@@ -3,6 +3,7 @@ import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
 
 class DiacriticMatcherHandler extends DiacriticAbstractHandler {
     protected diacriticTrap(target: DiacriticMapperInterface, char: string): string {
+        super.diacriticTrap(target, char);
         const diacritics = target.dictionary[char.toLowerCase()];
         if (diacritics) {
             return target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;

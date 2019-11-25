@@ -5,6 +5,7 @@ import DiacriticMatcherHandler from './diacritic-matcher-handler.class';
 import DiacriticInsensitiveMatcherHandler from './diacritic-insensitive-matcher-handler.class';
 import DiacriticValidatorHandler from './diacritic-validator-handler.class';
 import DiacriticInsensitiveValidatorHandler from './diacritic-insensitive-validator-handler.class';
+import { isString } from 'util';
 
 class DiacriticMapperCore implements DiacriticMapperInterface {
 
@@ -22,11 +23,13 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
     public constructor(dictionaries: DiacriticSetInterface[]) {
         const dictionary = dictionaries.reduce((accumulator: DiacriticSetInterface, currentDict: DiacriticSetInterface) => {
             Object.entries(currentDict).forEach(([letter, diacritics]) => {
-                if (letter in accumulator) {
-                    const newDiacritics = diacritics.split('').filter(l => !accumulator[letter].includes(l)).join('');
-                    accumulator[letter] += newDiacritics;
-                } else {
-                    accumulator[letter] = diacritics;
+                if (isString(diacritics)){
+                    if (letter in accumulator) {
+                        const newDiacritics = diacritics.split('').filter(l => !accumulator[letter].includes(l)).join('');
+                        accumulator[letter] += newDiacritics;
+                    } else {
+                        accumulator[letter] = diacritics;
+                    }
                 }
             });
             return accumulator;

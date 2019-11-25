@@ -69,9 +69,17 @@ describe('Diacritic matcherBy', () => {
     });
 });
 
-
 describe('Diacritic replace', () => {
     it ('Should replace diacritics from àççèß and return access', () => {
         expect(diacriticRemover.replace('àççèß')).to.be.equal('access');
+    });
+});
+
+describe('Case utils', () => {
+    it ('Should identify properly lowercase and uppercase chars', () => {
+        expect(diacriticRemover.isLowerCase('a')).to.be.true;
+        expect(diacriticRemover.isUpperCase('Z')).to.be.true;
+        expect(diacriticRemover.isLowerCase('K')).to.be.false;
+        expect(diacriticRemover.isUpperCase('z')).to.be.false;
     });
 });

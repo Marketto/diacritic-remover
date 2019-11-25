@@ -4,6 +4,7 @@ import { isString } from 'util';
 
 class DiacriticRemoverHandler extends DiacriticAbstractHandler {
     protected diacriticTrap(target: DiacriticMapperInterface, char: string): string {
+        super.diacriticTrap(target, char);
         const upperCase: boolean = target.isUpperCase(char);
         const lowerCaseChar = char.toLowerCase();
 
