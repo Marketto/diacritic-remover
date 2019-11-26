@@ -64,11 +64,18 @@ describe('Diacritic matcherBy', () => {
     it ('Should match a single char', () => {
         expect(diacriticRemover.matcherBy(/^e$/)).to.be.equal(diacriticRemover.matcher.e);
     });
-    it ('Should match a set of chars', () => {
+    it ('Should match a lowercase set of chars', () => {
         expect(diacriticRemover.matcherBy(/^[au]$/)).to.be.equal(diacriticRemover.matcher.a+diacriticRemover.matcher.u);
     });
-    it ('Should match a range', () => {
-        expect(diacriticRemover.matcherBy(/^[a-z]/i)).to.be.ok;
+    it ('Should match a uppercase set of chars', () => {
+        expect(diacriticRemover.matcherBy(/^[OI]$/)).to.be.equal((diacriticRemover.matcher.i+diacriticRemover.matcher.o).toUpperCase());
+    });
+    it ('Should match insensitive set of chars', () => {
+        const expectedLowerCaseValues = diacriticRemover.matcher.u+diacriticRemover.matcher.c;
+        expect(diacriticRemover.matcherBy(/^[uC]$/i)).to.be.equal(expectedLowerCaseValues + expectedLowerCaseValues.toUpperCase());
+    });
+    it ('Should match missing values from dictionary', () => {
+        expect(diacriticRemover.matcherBy(/^[75]/)).to.be.equal('');
     });
 });
 
