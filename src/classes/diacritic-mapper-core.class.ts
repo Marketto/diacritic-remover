@@ -43,13 +43,13 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
     }
 
     public matcherBy(regexp: RegExp): string {
-        const lowerCase = Object.keys(this.dictionary)
-            .filter(key => regexp.test(key))
-            .map(key => this.dictionary[key]);
+        const lowerCase = Object.entries(this.dictionary)
+            .filter(([key, value]) => value && regexp.test(key))
+            .map(([,value]) => value);
 
-        const upperCase = Object.keys(this.dictionary)
-            .filter(key => regexp.test(key.toUpperCase()))
-            .map(key => this.dictionary[key.toLowerCase()].toUpperCase());
+        const upperCase = Object.entries(this.dictionary)
+            .filter(([key, value]) => value && regexp.test(key.toUpperCase()))
+            .map(([,value]) => value.toUpperCase());
 
         return [...lowerCase, ...upperCase].join('');
     }
