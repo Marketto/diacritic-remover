@@ -49,7 +49,7 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
 
         const upperCase = Object.keys(this.dictionary)
             .filter(key => regexp.test(key.toUpperCase()))
-            .map(key => this.dictionary[key.toUpperCase()].toUpperCase());
+            .map(key => this.dictionary[key.toLowerCase()].toUpperCase());
 
         return [...lowerCase, ...upperCase].join('');
     }
