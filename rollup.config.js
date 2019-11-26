@@ -1,37 +1,18 @@
-import rollupTypescript from 'rollup-plugin-typescript2';
-import typescript from 'typescript';
+import rollupPluginTs from "@wessberg/rollup-plugin-ts";
 import pkg from './package.json';
 import { terser } from 'rollup-plugin-terser';
 import builtins from 'rollup-plugin-node-builtins';
 import license from 'rollup-plugin-license';
 import path from 'path';
 
-export default {
+const baseConf = {
     input: 'src/diacritic-remover.ts',
-    output: [
-        {
-            file: pkg.main,
-            format: 'cjs',
-            sourcemap: true
-        },
-        {
-            file: pkg.module,
-            format: 'es',
-            sourcemap: true
-        },
-        {
-            file: pkg.browser,
-            format: 'iife',
-            name: 'DiacriticFilter',
-            sourcemap: true
-        }
-    ],
     external: [
         ...Object.keys(pkg.dependencies || {}),
         'i18n/all'
     ],
     plugins: [
-        rollupTypescript({ typescript, tsconfig: './src/tsconfig.json' }),
+        //rollupPluginTs({}),
         builtins(),
         terser(),
         license({
@@ -43,4 +24,45 @@ export default {
               },        
         }),
     ],
-};
+} 
+
+export default [
+    {
+        ...baseConf,
+        output: [
+            {
+                file: pkg.main,
+                format: 'cjs',
+                sourcemap: true
+            }
+        ],
+        plugins: [
+            rollupPluginTs({}),
+            ...baseConf.plugins
+        ]
+    },
+    {
+        ...baseConf,
+        output: [
+            {
+                file: pkg.module,
+                format: 'es',
+                sourcemap: true
+            },
+            {
+                file: pkg.browser,
+                format: 'iife',
+                name: 'DiacriticFilter',
+                sourcemap: true
+            }
+        ],
+        plugins: [
+            rollupPluginTs({
+                tsconfig: {
+                    declaration: false
+                }
+            }),
+            ...baseConf.plugins
+        ]
+    }
+];
