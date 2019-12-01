@@ -1,6 +1,6 @@
 {
   "name": "@marketto/diacritic-remover",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Tool to replace diacritics in strings",
   "main": "dist/diacritic-remover.js",
   "module": "dist/diacritic-remover.es.js",
@@ -43,6 +43,7 @@
     "typescript": "^3.7.2"
   },
   "scripts": {
+    "release": "npm audit fix && npm run lint-fix && npm run test && npm run build",
     "build": "node ./scripts/i18n-all.js && npx rollup -c",
     "lint": "npx tslint -c tslint.json \"src/**/*.ts\"",
     "lint-fix": "npx tslint -c tslint.json \"src/**/*.ts\" --fix",
