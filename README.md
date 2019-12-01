@@ -15,6 +15,8 @@
 
 Typescript library to handle and remove diacritics from strings
 
+## [CHANGELOG](CHANGELOG.md)
+
 ## INSTALLATION
 ```{r, engine='bash', global_install}
 npm i -s @marketto/diacritic-remover
@@ -96,16 +98,6 @@ diacriticRemover.insensitiveValidator.A.test('À'); //true
 ```javascript
 diacriticRemover.matcherBy(/^[au]$/); //áäâàåÄąāãăúûüùůŭųūư
 ```
-
-## CHANGELOG
-### 1.0.2
-* matcherBy Refactoring
-### 1.0.1
-* matcherBy fix
-* type d.ts
-* source maps
-### 1.0.0
-* First version
 
 ## LICENSE
 [MIT License](LICENSE)
