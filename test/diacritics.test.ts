@@ -16,6 +16,11 @@ describe('Diacritic Matcher', () => {
     it ('Should find deacritics', () => {
         expect(diacriticRemover.matcher.i).not.to.be.undefined;
         expect(diacriticRemover.matcher.i).to.include('ì');
+        expect(diacriticRemover.matcher.i).to.include('i');
+    });
+    it('Should include char', () => {
+        expect(diacriticRemover.matcher.m).to.include('m');
+        expect(diacriticRemover.matcher.c).to.include('c');
     });
 });
 
@@ -25,7 +30,15 @@ describe('Diacritic Insensitive Matcher', () => {
         const matcherO = diacriticRemover.matcher.O;
         expect(matchero).not.to.be.undefined;
         expect(matcherO).not.to.be.undefined;
-        expect(diacriticRemover.insensitiveMatcher.o).to.be.equal(matchero + matcherO);
+        expect(diacriticRemover.insensitiveMatcher.o)
+            .to.include(matchero).and
+            .to.include(matcherO).and
+            .to.include('o')
+            .to.include('O');
+    });
+    it('Should include char', () => {
+        expect(diacriticRemover.insensitiveMatcher.m).to.include('m');
+        expect(diacriticRemover.insensitiveMatcher.c).to.include('c');
     });
 });
 

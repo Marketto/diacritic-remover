@@ -24,6 +24,6 @@ describe('Multiple dictionaries', () => {
         expect(diacriticRemover.ý).to.be.equal('y');
     });
     it('Should not duplicate diacritics in merged dictionary', () => {
-        expect(diacriticRemover.matcher.e).to.be.equal("èéê");
+        expect(diacriticRemover.matcher.e).to.be.equal("eèéê");
     });
 });

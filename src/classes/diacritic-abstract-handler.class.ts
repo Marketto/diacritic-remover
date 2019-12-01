@@ -14,7 +14,7 @@ abstract class DiacriticAbstractHandler implements ProxyHandler<DiacriticMapperI
     }
 
     protected diacriticTrap(target: DiacriticMapperInterface, char: string): any {
-        return;
+        return char;
     }
 }
 
