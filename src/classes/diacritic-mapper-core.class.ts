@@ -21,19 +21,21 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
     public insensitiveValidator: DiacriticValidatorSetInterface;
 
     public constructor(dictionaries: DiacriticSetInterface[]) {
-        const dictionary = dictionaries.reduce((accumulator: DiacriticSetInterface, currentDict: DiacriticSetInterface) => {
-            Object.entries(currentDict).forEach(([letter, diacritics]) => {
-                if (isString(diacritics)){
-                    if (letter in accumulator) {
-                        const newDiacritics = diacritics.split('').filter(l => !accumulator[letter].includes(l)).join('');
-                        accumulator[letter] += newDiacritics;
-                    } else {
-                        accumulator[letter] = diacritics;
-                    }
-                }
+        const dictionary = dictionaries
+            .reduce((
+                dictMerge: DiacriticSetInterface,
+                currentDict: DiacriticSetInterface
+            ) => Object.entries(currentDict)
+                .reduce((accumulator: DiacriticSetInterface, [letter, diacritics]) => ({
+                    ...accumulator,
+                    [letter]: (accumulator[letter] || '') + diacritics
+                }), dictMerge),
+            {});
+
+        Object.entries(dictionary)
+            .forEach(([letter, diacritics]) => {
+                dictionary[letter] = [...(new Set([...diacritics]))].sort().join('');
             });
-            return accumulator;
-        }, {});
 
         this.dictionary = Object.freeze(dictionary);
         this.matcher = new Proxy(this, new DiacriticMatcherHandler());
@@ -45,11 +47,11 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
     public matcherBy(regexp: RegExp): string {
         const lowerCase = Object.entries(this.dictionary)
             .filter(([key, value]) => value && regexp.test(key))
-            .map(([,value]) => value);
+            .map(([char ,value]) => char + value);
 
         const upperCase = Object.entries(this.dictionary)
             .filter(([key, value]) => value && regexp.test(key.toUpperCase()))
-            .map(([,value]) => value.toUpperCase());
+            .map(([char ,value]) => (char + value).toUpperCase());
 
         return [...lowerCase, ...upperCase].join('');
     }
