@@ -4,23 +4,28 @@ import DiacriticRemover from '../src/diacritic-remover';
 const diacriticRemover = new DiacriticRemover();
 
 describe('Diacritic Remover Handler', () => {
-    it ('Should remove deacritic', () => {
+    it ('Should return a for à', () => {
         expect(diacriticRemover.à).to.be.equal('a');
     });
     it ('Should return char for missing diacritics', () => {
         expect(diacriticRemover['3']).to.be.equal('3');
     });
+    it('Should return empty string for \'', () => {
+        expect(diacriticRemover['\'']).to.be.equal('');
+    });
 });
 
 describe('Diacritic Matcher', () => {
-    it ('Should find deacritics', () => {
-        expect(diacriticRemover.matcher.i).not.to.be.undefined;
+    it ('Should return i diacritics for i, including i itself', () => {
         expect(diacriticRemover.matcher.i).to.include('ì');
         expect(diacriticRemover.matcher.i).to.include('i');
     });
-    it('Should include char', () => {
+    it('Should include m and c', () => {
         expect(diacriticRemover.matcher.m).to.include('m');
         expect(diacriticRemover.matcher.c).to.include('c');
+    });
+    it('Should return \'·ʰʼ׳ for empty string', () => {
+        expect(diacriticRemover.matcher['']).to.be.equal('\'·ʰʼ׳');
     });
 });
 
@@ -31,14 +36,14 @@ describe('Diacritic Insensitive Matcher', () => {
         expect(matchero).not.to.be.undefined;
         expect(matcherO).not.to.be.undefined;
         expect(diacriticRemover.insensitiveMatcher.o)
-            .to.include(matchero).and
-            .to.include(matcherO).and
-            .to.include('o')
-            .to.include('O');
+            .to.equal([...matchero, ...matcherO].sort().join(''));
     });
     it('Should include char', () => {
         expect(diacriticRemover.insensitiveMatcher.m).to.include('m');
         expect(diacriticRemover.insensitiveMatcher.c).to.include('c');
+    });
+    it('Should return \'\'·ʰʼ׳\' for empty string', () => {
+        expect(diacriticRemover.insensitiveMatcher['']).to.be.equal('\'·ʰʼ׳');
     });
 });
 

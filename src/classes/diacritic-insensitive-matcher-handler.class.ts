@@ -3,14 +3,16 @@ import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
 
 class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
     protected diacriticTrap(target: DiacriticMapperInterface, char: string): string {
-        let insensitiveMatcher = super.diacriticTrap(target, char);
-        if (!insensitiveMatcher) {
-            return '';
-        }
+        const lowerCaseChar = super.diacriticTrap(target, char).toLowerCase();
+        const insensitiveMatcher = new Set<string>([lowerCaseChar, lowerCaseChar.toUpperCase()]);
+        const diacritics = target.dictionary[lowerCaseChar] || '';
+        [...diacritics]
+            .forEach(diacritic => {
+                insensitiveMatcher.add(diacritic);
+                insensitiveMatcher.add(diacritic.toUpperCase());
+            });
 
-        const diacritics = target.dictionary[char.toLowerCase()];
-        insensitiveMatcher += diacritics || '';
-        return insensitiveMatcher.toLowerCase() + insensitiveMatcher.toUpperCase();
+        return [...insensitiveMatcher].sort().join('');
     }
 }
 
