@@ -68,7 +68,7 @@ class DiacriticMapperCore implements IDiacriticMapper {
      * @memberof DiacriticMapperCore
      */
     public isUpperCase(text: string = ""): boolean {
-        return text.toUpperCase() === text;
+        return text.toLowerCase() !== text;
     }
 
     /**
@@ -79,7 +79,7 @@ class DiacriticMapperCore implements IDiacriticMapper {
      * @memberof DiacriticMapperCore
      */
     public isLowerCase(text: string = ""): boolean {
-        return text.toLowerCase() === text;
+        return text.toUpperCase() !== text;
     }
 }
 

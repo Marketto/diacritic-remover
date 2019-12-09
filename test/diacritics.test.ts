@@ -50,13 +50,42 @@ describe("Diacritic Insensitive Matcher", () => {
 });
 
 describe("Diacritic Validator", () => {
-    it ("Should validate à with a", () => {
+    it ("Should validate à and a with a", () => {
         expect(diacriticRemover.validator.a).to.be.a("RegExp");
         expect(diacriticRemover.validator.a.test("à")).to.be.true;
+        expect(diacriticRemover.validator.a.test("a")).to.be.true;
     });
-    it ("Should validate c with c", () => {
+    it ("Should validate Ì and I with I", () => {
+        expect(diacriticRemover.validator.I).to.be.a("RegExp");
+        expect(diacriticRemover.validator.I.test("Ì")).to.be.true;
+        expect(diacriticRemover.validator.I.test("I")).to.be.true;
+    });
+    it ("Should not validate Ì and I with i", () => {
+        expect(diacriticRemover.validator.i).to.be.a("RegExp");
+        expect(diacriticRemover.validator.i.test("Ì")).to.be.false;
+        expect(diacriticRemover.validator.i.test("I")).to.be.false;
+    });
+    it ("Should not validate a and à with A", () => {
+        expect(diacriticRemover.validator.A).to.be.a("RegExp");
+        expect(diacriticRemover.validator.A.test("à")).to.be.false;
+        expect(diacriticRemover.validator.A.test("a")).to.be.false;
+    });
+    it ("Should validate c and ç with c", () => {
         expect(diacriticRemover.validator.c).to.be.a("RegExp");
         expect(diacriticRemover.validator.c.test("c")).to.be.true;
+        expect(diacriticRemover.validator.c.test("ç")).to.be.true;
+    });
+    it ("Should validate 7 with 7", () => {
+        expect(diacriticRemover.validator[7]).to.be.a("RegExp");
+        expect(diacriticRemover.validator[7].test("7")).to.be.true;
+    });
+    it ("Should validate j with j", () => {
+        expect(diacriticRemover.validator.j).to.be.a("RegExp");
+        expect(diacriticRemover.validator.j.test("j")).to.be.true;
+    });
+    it ("Should validate '' with ''", () => {
+        expect(diacriticRemover.validator[""]).to.be.a("RegExp");
+        expect(diacriticRemover.validator[""].test("'")).to.be.true;
     });
 });
 
@@ -73,10 +102,30 @@ describe("Diacritic Insensitive Validator", () => {
     it ("Should validate c and C with c or C", () => {
         expect(diacriticRemover.insensitiveValidator.c).to.be.a("RegExp");
         expect(diacriticRemover.insensitiveValidator.c.test("c")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.c.test("ç")).to.be.true;
         expect(diacriticRemover.insensitiveValidator.c.test("C")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.c.test("Ç")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.c.test("z")).to.be.false;
+        expect(diacriticRemover.insensitiveValidator.c.test("Z")).to.be.false;
         expect(diacriticRemover.insensitiveValidator.C).to.be.a("RegExp");
         expect(diacriticRemover.insensitiveValidator.C.test("c")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.C.test("ç")).to.be.true;
         expect(diacriticRemover.insensitiveValidator.C.test("C")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.C.test("Ç")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.c.test("z")).to.be.false;
+        expect(diacriticRemover.insensitiveValidator.c.test("Z")).to.be.false;
+    });
+    it ("Should validate k and K with k or K", () => {
+        expect(diacriticRemover.insensitiveValidator.k).to.be.a("RegExp");
+        expect(diacriticRemover.insensitiveValidator.k.test("k")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.k.test("K")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.K).to.be.a("RegExp");
+        expect(diacriticRemover.insensitiveValidator.K.test("k")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.K.test("K")).to.be.true;
+    });
+    it ("Should validate 3 with 3", () => {
+        expect(diacriticRemover.insensitiveValidator[3]).to.be.a("RegExp");
+        expect(diacriticRemover.insensitiveValidator[3].test("3")).to.be.true;
     });
 });
 
@@ -115,10 +164,20 @@ describe("Diacritic replace", () => {
 });
 
 describe("Case utils", () => {
-    it ("Should identify properly lowercase and uppercase chars", () => {
+    it ("Should identify properly lowerCase chars", () => {
         expect(diacriticRemover.isLowerCase("a")).to.be.true;
-        expect(diacriticRemover.isUpperCase("Z")).to.be.true;
         expect(diacriticRemover.isLowerCase("K")).to.be.false;
+    });
+    it ("Should not identify non-letter chars as lowerCase", () => {
+        expect(diacriticRemover.isLowerCase("3")).to.be.false;
+        expect(diacriticRemover.isLowerCase()).to.be.false;
+    });
+    it ("Should identify properly upperCase chars", () => {
+        expect(diacriticRemover.isUpperCase("Z")).to.be.true;
         expect(diacriticRemover.isUpperCase("z")).to.be.false;
+    });
+    it ("Should not identify non-letter chars as upperCase", () => {
+        expect(diacriticRemover.isUpperCase("3")).to.be.false;
+        expect(diacriticRemover.isUpperCase()).to.be.false;
     });
 });
