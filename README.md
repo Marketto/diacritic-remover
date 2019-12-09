@@ -18,8 +18,13 @@ Typescript library to handle and remove diacritics from strings
 ## [CHANGELOG](CHANGELOG.md)
 
 ## INSTALLATION
+### NPM
 ```{r, engine='bash', global_install}
 npm i -s @marketto/diacritic-remover
+```
+### YARN
+```{r, engine='bash', global_install}
+yarn add @marketto/diacritic-remover
 ```
 
 ### NodeJs
@@ -39,7 +44,7 @@ const diacriticRemover = new DiacriticRemover(); //It loads all diacritics by de
 ```
 ### Script
 ```html
-<script src="https://unpkg.com/browse/@marketto/diacritic-remover/dist/diacritic-remover.bundle.js"></script>
+<script src="https://unpkg.com/browse/@marketto/diacritic-remover/dist/diacritic-remover.bundle.min.js"></script>
 <script>
     var diacriticRemover = new DiacriticRemover(); //It loads all diacritics by default
 </script>

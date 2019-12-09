@@ -1,16 +1,16 @@
-import DiacriticRemoverHandler from './diacritic-remover-handler.class';
-import DiacriticSetInterface from '../interfaces/diacritic-set.interface';
-import DiacriticMapperCore from './diacritic-mapper-core.class';
+import IDiacriticSet from "../interfaces/diacritic-set.interface";
+import DiacriticMapperCore from "./diacritic-mapper-core.class";
+import DiacriticRemoverHandler from "./diacritic-remover-handler.class";
 
-import I18N_ALL from '../i18n/i18n-all.const';
+import I18N_ALL from "../i18n/i18n-all.const";
 
 class DiacriticRemover extends DiacriticMapperCore {
     [letter: string]: string|any;
-    constructor(...dictionaries: DiacriticSetInterface[]) {
-        super(dictionaries.length ? dictionaries : [I18N_ALL as DiacriticSetInterface]);
-        Object.defineProperty(this, 'dictionary', {
+    constructor(...dictionaries: IDiacriticSet[]) {
+        super(dictionaries.length ? dictionaries : [I18N_ALL as IDiacriticSet]);
+        Object.defineProperty(this, "dictionary", {
+            configurable: false,
             enumerable: false,
-            configurable: false
         });
         return new Proxy(this, new DiacriticRemoverHandler());
     }

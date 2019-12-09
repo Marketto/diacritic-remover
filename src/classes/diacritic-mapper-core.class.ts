@@ -1,40 +1,40 @@
-import DiacriticSetInterface from '../interfaces/diacritic-set.interface';
-import DiacriticValidatorSetInterface from '../interfaces/diacritic-validator-set.interface';
-import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
-import DiacriticMatcherHandler from './diacritic-matcher-handler.class';
-import DiacriticInsensitiveMatcherHandler from './diacritic-insensitive-matcher-handler.class';
-import DiacriticValidatorHandler from './diacritic-validator-handler.class';
-import DiacriticInsensitiveValidatorHandler from './diacritic-insensitive-validator-handler.class';
-import { isString } from 'util';
+import { isString } from "util";
+import IDiacriticMapper from "../interfaces/diacritic-mapper.interface";
+import IDiacriticSet from "../interfaces/diacritic-set.interface";
+import IDiacriticValidatorSet from "../interfaces/diacritic-validator-set.interface";
+import DiacriticInsensitiveMatcherHandler from "./diacritic-insensitive-matcher-handler.class";
+import DiacriticInsensitiveValidatorHandler from "./diacritic-insensitive-validator-handler.class";
+import DiacriticMatcherHandler from "./diacritic-matcher-handler.class";
+import DiacriticValidatorHandler from "./diacritic-validator-handler.class";
 
-class DiacriticMapperCore implements DiacriticMapperInterface {
+class DiacriticMapperCore implements IDiacriticMapper {
 
-    [key:string]: string|any;
+    [key: string]: string|any;
 
-    public dictionary: DiacriticSetInterface;
-    public matcher: DiacriticSetInterface;
+    public dictionary: IDiacriticSet;
+    public matcher: IDiacriticSet;
 
-    public insensitiveMatcher: DiacriticSetInterface;
+    public insensitiveMatcher: IDiacriticSet;
 
-    public validator: DiacriticValidatorSetInterface;
+    public validator: IDiacriticValidatorSet;
 
-    public insensitiveValidator: DiacriticValidatorSetInterface;
+    public insensitiveValidator: IDiacriticValidatorSet;
 
-    public constructor(dictionaries: DiacriticSetInterface[]) {
+    public constructor(dictionaries: IDiacriticSet[]) {
         const dictionary = dictionaries
             .reduce((
-                dictMerge: DiacriticSetInterface,
-                currentDict: DiacriticSetInterface
+                dictMerge: IDiacriticSet,
+                currentDict: IDiacriticSet,
             ) => Object.entries(currentDict)
-                .reduce((accumulator: DiacriticSetInterface, [letter, diacritics]) => ({
+                .reduce((accumulator: IDiacriticSet, [letter, diacritics]) => ({
                     ...accumulator,
-                    [letter]: (accumulator[letter] || '') + diacritics
+                    [letter]: (accumulator[letter] || "") + diacritics,
                 }), dictMerge),
             {});
 
         Object.entries(dictionary)
             .forEach(([letter, diacritics]) => {
-                dictionary[letter] = [...(new Set([...diacritics]))].sort().join('');
+                dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
             });
 
         this.dictionary = Object.freeze(dictionary);
@@ -47,13 +47,13 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
     public matcherBy(regexp: RegExp): string {
         const lowerCase = Object.entries(this.dictionary)
             .filter(([key, value]) => value && regexp.test(key))
-            .map(([char ,value]) => char + value);
+            .map(([char , value]) => char + value);
 
         const upperCase = Object.entries(this.dictionary)
             .filter(([key, value]) => value && regexp.test(key.toUpperCase()))
-            .map(([char ,value]) => (char + value).toUpperCase());
+            .map(([char , value]) => (char + value).toUpperCase());
 
-        return [...lowerCase, ...upperCase].join('');
+        return [...lowerCase, ...upperCase].join("");
     }
 
     public replace(text: string): string {
@@ -67,7 +67,7 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
      * @returns {boolean} true if text is uppercase
      * @memberof DiacriticMapperCore
      */
-    public isUpperCase(text: string = ''): boolean {
+    public isUpperCase(text: string = ""): boolean {
         return text.toUpperCase() === text;
     }
 
@@ -78,7 +78,7 @@ class DiacriticMapperCore implements DiacriticMapperInterface {
      * @returns {boolean} true if text is lowercase
      * @memberof DiacriticMapperCore
      */
-    public isLowerCase(text: string = ''): boolean {
+    public isLowerCase(text: string = ""): boolean {
         return text.toLowerCase() === text;
     }
 }
