@@ -1,10 +1,10 @@
 import IDiacriticMapper from "../interfaces/diacritic-mapper.interface";
-import DiacriticAbstractHandler from "./diacritic-abstract-handler.class";
+import DiacriticValidatorHandler from "./diacritic-validator-handler.class";
 
-class DiacriticInsensitiveValidatorHandler extends DiacriticAbstractHandler {
+class DiacriticInsensitiveValidatorHandler extends DiacriticValidatorHandler {
     protected diacriticTrap(target: IDiacriticMapper, char: string): RegExp {
-        super.diacriticTrap(target, char);
-        return new RegExp(`[${char}${target.insensitiveMatcher[char] || ""}]`, "ui");
+        const { source } = super.diacriticTrap(target, char);
+        return new RegExp(source, "ui");
     }
 }
 
