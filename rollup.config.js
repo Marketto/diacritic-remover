@@ -52,9 +52,9 @@ export default [
                 sourcemap: true
             },
             {
-                file: pkg.browser,
+                file: 'dist/diacritic-remover.bundle.min.js',
                 format: 'iife',
-                name: 'DiacriticFilter',
+                name: 'DiacriticRemover',
                 sourcemap: true
             }
         ],

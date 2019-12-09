@@ -1,15 +1,15 @@
-import DiacriticAbstractHandler from './diacritic-abstract-handler.class';
-import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
+import IDiacriticMapper from "../interfaces/diacritic-mapper.interface";
+import DiacriticAbstractHandler from "./diacritic-abstract-handler.class";
 
 class DiacriticValidatorHandler extends DiacriticAbstractHandler {
-    protected diacriticTrap(target: DiacriticMapperInterface, char: string): RegExp {
+    protected diacriticTrap(target: IDiacriticMapper, char: string): RegExp {
         super.diacriticTrap(target, char);
         const diacritics = target.dictionary[char.toLowerCase()];
-        let matchingDiacritics = '';
+        let matchingDiacritics = "";
         if (diacritics) {
             matchingDiacritics = target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;
         }
-        return new RegExp(`[${char}${matchingDiacritics}]`, 'u');
+        return new RegExp(`[${char}${matchingDiacritics}]`, "u");
     }
 }
 

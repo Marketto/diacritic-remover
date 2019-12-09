@@ -1,15 +1,15 @@
-import DiacriticSetInterface from './diacritic-set.interface';
-import DiacriticValidatorSetInterface from './diacritic-validator-set.interface';
+import IDiacriticSet from "./diacritic-set.interface";
+import IDiacriticValidatorSet from "./diacritic-validator-set.interface";
 
-interface DiacriticMapperInterface {
+interface IDiacriticMapper {
 
-    [key:string]: string|any;
-    dictionary: DiacriticSetInterface;
+    [key: string]: string|any;
+    dictionary: IDiacriticSet;
 
-    matcher: DiacriticSetInterface;
-    insensitiveMatcher: DiacriticSetInterface;
-    validator: DiacriticValidatorSetInterface;
-    insensitiveValidator: DiacriticValidatorSetInterface;
+    matcher: IDiacriticSet;
+    insensitiveMatcher: IDiacriticSet;
+    validator: IDiacriticValidatorSet;
+    insensitiveValidator: IDiacriticValidatorSet;
 
     matcherBy(regexp: RegExp): string;
 
@@ -20,4 +20,4 @@ interface DiacriticMapperInterface {
     isLowerCase(text: string): boolean;
 }
 
-export default DiacriticMapperInterface;
+export default IDiacriticMapper;
