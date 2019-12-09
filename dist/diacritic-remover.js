@@ -41,10 +41,19 @@ class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
     }
 }
 
-class DiacriticInsensitiveValidatorHandler extends DiacriticAbstractHandler {
+class DiacriticValidatorHandler extends DiacriticAbstractHandler {
     diacriticTrap(target, char) {
         super.diacriticTrap(target, char);
-        return new RegExp(`[${char}${target.insensitiveMatcher[char] || ""}]`, "ui");
+        const diacritics = target.dictionary[char.toLowerCase()] || char;
+        const matchingDiacritics = target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;
+        return new RegExp(`[${char}${matchingDiacritics}]`, "u");
+    }
+}
+
+class DiacriticInsensitiveValidatorHandler extends DiacriticValidatorHandler {
+    diacriticTrap(target, char) {
+        const { source } = super.diacriticTrap(target, char);
+        return new RegExp(source, "ui");
     }
 }
 
@@ -56,18 +65,6 @@ class DiacriticMatcherHandler extends DiacriticAbstractHandler {
             matcher += target.isUpperCase(matcher) ? diacritics.toUpperCase() : diacritics;
         }
         return matcher;
-    }
-}
-
-class DiacriticValidatorHandler extends DiacriticAbstractHandler {
-    diacriticTrap(target, char) {
-        super.diacriticTrap(target, char);
-        const diacritics = target.dictionary[char.toLowerCase()];
-        let matchingDiacritics = "";
-        if (diacritics) {
-            matchingDiacritics = target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;
-        }
-        return new RegExp(`[${char}${matchingDiacritics}]`, "u");
     }
 }
 
@@ -106,7 +103,7 @@ class DiacriticMapperCore {
      * @memberof DiacriticMapperCore
      */
     isUpperCase(text = "") {
-        return text.toUpperCase() === text;
+        return text.toLowerCase() !== text;
     }
     /**
      * Check if the given string is lowercase
@@ -116,7 +113,7 @@ class DiacriticMapperCore {
      * @memberof DiacriticMapperCore
      */
     isLowerCase(text = "") {
-        return text.toLowerCase() === text;
+        return text.toUpperCase() !== text;
     }
 }
 
