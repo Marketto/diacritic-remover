@@ -1,5 +1,5 @@
 /**
- * @marketto/diacritic-remover 1.0.3
+ * @marketto/diacritic-remover 1.0.5
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
  * ============================================================
@@ -7,5 +7,189 @@
  * Article: https://en.wikipedia.org/wiki/Diacritic
  * License: CC-BY-SA 3.0
  */
-var DiacriticFilter=function(){"use strict";function e(e){return"string"==typeof e}class t{get(t,r,i){return e(r)&&r.length<=1?this.diacriticTrap(t,r):Reflect.get(t,r,i)}diacriticTrap(e,t){return t}}class r extends t{diacriticTrap(t,r){super.diacriticTrap(t,r);const i=t.isUpperCase(r),s=r.toLowerCase(),[a]=Object.entries(t.dictionary).find(([,t])=>e(t)&&t.includes(s))||[];return i&&a?a.toUpperCase():e(a)?a:r}}class i extends t{diacriticTrap(e,t){let r=super.diacriticTrap(e,t);const i=e.dictionary[t.toLowerCase()];return i&&(r+=e.isUpperCase(r)?i.toUpperCase():i),r}}class s extends t{diacriticTrap(e,t){const r=super.diacriticTrap(e,t).toLowerCase(),i=new Set([r,r.toUpperCase()]);return[...e.dictionary[r]||""].forEach(e=>{i.add(e),i.add(e.toUpperCase())}),[...i].sort().join("")}}class a extends t{diacriticTrap(e,t){super.diacriticTrap(e,t);const r=e.dictionary[t.toLowerCase()];let i="";return r&&(i=e.isUpperCase(t)?r.toUpperCase():r),new RegExp(`[${t}${i}]`,"u")}}class n extends t{diacriticTrap(e,t){return super.diacriticTrap(e,t),new RegExp(`[${t}${e.insensitiveMatcher[t]||""}]`,"ui")}}class c{constructor(e){const t=e.reduce((e,t)=>Object.entries(t).reduce((e,[t,r])=>Object.assign(Object.assign({},e),{[t]:(e[t]||"")+r}),e),{});Object.entries(t).forEach(([e,r])=>{t[e]=[...new Set([...r])].sort().join("")}),this.dictionary=Object.freeze(t),this.matcher=new Proxy(this,new i),this.insensitiveMatcher=new Proxy(this,new s),this.validator=new Proxy(this,new a),this.insensitiveValidator=new Proxy(this,new n)}matcherBy(e){return[...Object.entries(this.dictionary).filter(([t,r])=>r&&e.test(t)).map(([e,t])=>e+t),...Object.entries(this.dictionary).filter(([t,r])=>r&&e.test(t.toUpperCase())).map(([e,t])=>(e+t).toUpperCase())].join("")}replace(e){return e.replace(/./g,e=>this[e])}isUpperCase(e=""){return e.toUpperCase()===e}isLowerCase(e=""){return e.toLowerCase()===e}}var o={a:"áäâàåÄąāãă",e:"éèêëěÊęėēё",i:"íîïi̇řìįī",o:"óôöòøōõơ",u:"úûüùůŭųūư",y:"ýÿŷỳ",n:"ñňŋņń",l:"ḷŀłļĺľ",h:"ḥĥȟħ",c:"çčćĉĊ",g:"ğĝǧģĠġ",s:"şšŝṣșſś","у":"ў","и":"йѝ","е":"ё",d:"đďðḏ",z:"žŻźż",t:"ťțțṭ",w:"ẅŵẃẁ",ae:"æ",ss:"ß","α":"ά","ε":"έ","η":"ή","ι":"ίΐϊ","ο":"ό","υ":"ύΰϋ","ω":"ώ",j:"ĵ",oe:"œ","":"ʰ'ʼ·׳",ii:"î",k:"ķ","к":"ќ","г":"ѓґ",ij:"ĳ",r:"ŕ","і":"ї"};return class extends c{constructor(...e){return super(e.length?e:[o]),Object.defineProperty(this,"dictionary",{enumerable:!1,configurable:!1}),new Proxy(this,new r)}}}();
+var DiacriticRemover = (function () {
+  'use strict';
+
+  // Copyright Joyent, Inc. and other Node contributors.
+
+  function isString(arg) {
+    return typeof arg === 'string';
+  }
+
+  class DiacriticAbstractHandler {
+      get(target, prop, receiver) {
+          if (isString(prop) && prop.length <= 1) {
+              return this.diacriticTrap(target, prop);
+          }
+          return Reflect.get(target, prop, receiver);
+      }
+      diacriticTrap(target, char) {
+          return char;
+      }
+  }
+
+  class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
+      diacriticTrap(target, char) {
+          const lowerCaseChar = super.diacriticTrap(target, char).toLowerCase();
+          const insensitiveMatcher = new Set([lowerCaseChar, lowerCaseChar.toUpperCase()]);
+          const diacritics = target.dictionary[lowerCaseChar] || "";
+          [...diacritics]
+              .forEach((diacritic) => {
+              insensitiveMatcher.add(diacritic);
+              insensitiveMatcher.add(diacritic.toUpperCase());
+          });
+          return [...insensitiveMatcher].sort().join("");
+      }
+  }
+
+  class DiacriticValidatorHandler extends DiacriticAbstractHandler {
+      diacriticTrap(target, char) {
+          super.diacriticTrap(target, char);
+          const diacritics = target.dictionary[char.toLowerCase()] || char;
+          const matchingDiacritics = target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;
+          return new RegExp(`[${char}${matchingDiacritics}]`, "u");
+      }
+  }
+
+  class DiacriticInsensitiveValidatorHandler extends DiacriticValidatorHandler {
+      diacriticTrap(target, char) {
+          const { source } = super.diacriticTrap(target, char);
+          return new RegExp(source, "ui");
+      }
+  }
+
+  class DiacriticMatcherHandler extends DiacriticAbstractHandler {
+      diacriticTrap(target, char) {
+          let matcher = super.diacriticTrap(target, char);
+          const diacritics = target.dictionary[char.toLowerCase()];
+          if (diacritics) {
+              matcher += target.isUpperCase(matcher) ? diacritics.toUpperCase() : diacritics;
+          }
+          return matcher;
+      }
+  }
+
+  class DiacriticMapperCore {
+      constructor(dictionaries) {
+          const dictionary = dictionaries
+              .reduce((dictMerge, currentDict) => Object.entries(currentDict)
+              .reduce((accumulator, [letter, diacritics]) => (Object.assign(Object.assign({}, accumulator), { [letter]: (accumulator[letter] || "") + diacritics })), dictMerge), {});
+          Object.entries(dictionary)
+              .forEach(([letter, diacritics]) => {
+              dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
+          });
+          this.dictionary = Object.freeze(dictionary);
+          this.matcher = new Proxy(this, new DiacriticMatcherHandler());
+          this.insensitiveMatcher = new Proxy(this, new DiacriticInsensitiveMatcherHandler());
+          this.validator = new Proxy(this, new DiacriticValidatorHandler());
+          this.insensitiveValidator = new Proxy(this, new DiacriticInsensitiveValidatorHandler());
+      }
+      matcherBy(regexp) {
+          const lowerCase = Object.entries(this.dictionary)
+              .filter(([key, value]) => value && regexp.test(key))
+              .map(([char, value]) => char + value);
+          const upperCase = Object.entries(this.dictionary)
+              .filter(([key, value]) => value && regexp.test(key.toUpperCase()))
+              .map(([char, value]) => (char + value).toUpperCase());
+          return [...lowerCase, ...upperCase].join("");
+      }
+      replace(text) {
+          return text.replace(/./g, (char) => this[char]);
+      }
+      /**
+       * Check if the given string is uppercase
+       *
+       * @param {string} [text=''] string to check
+       * @returns {boolean} true if text is uppercase
+       * @memberof DiacriticMapperCore
+       */
+      isUpperCase(text = "") {
+          return text.toLowerCase() !== text;
+      }
+      /**
+       * Check if the given string is lowercase
+       *
+       * @param {string} [text=''] string to check
+       * @returns {boolean} true if text is lowercase
+       * @memberof DiacriticMapperCore
+       */
+      isLowerCase(text = "") {
+          return text.toUpperCase() !== text;
+      }
+  }
+
+  class DiacriticRemoverHandler extends DiacriticAbstractHandler {
+      diacriticTrap(target, char) {
+          super.diacriticTrap(target, char);
+          const upperCase = target.isUpperCase(char);
+          const lowerCaseChar = char.toLowerCase();
+          const [plainChar] = Object.entries(target.dictionary)
+              .find(([, diacritics]) => isString(diacritics) && diacritics.includes(lowerCaseChar)) || [];
+          if (upperCase && plainChar) {
+              return plainChar.toUpperCase();
+          }
+          return isString(plainChar) ? plainChar : char;
+      }
+  }
+
+  /**
+   * i18n jsons and i18n-all.ts use material from Wikipedia
+   * Article: https://en.wikipedia.org/wiki/Diacritic
+   * License: CC-BY-SA 3.0
+   */
+  var I18N_ALL = {
+      "": "ʰ'ʼ·׳",
+      "a": "áäâàåÄąāãă",
+      "ae": "æ",
+      "c": "çčćĉĊ",
+      "d": "đďðḏ",
+      "e": "éèêëěÊęėēё",
+      "g": "ğĝǧģĠġ",
+      "h": "ḥĥȟħ",
+      "i": "íîïi̇řìįī",
+      "ii": "î",
+      "ij": "ĳ",
+      "j": "ĵ",
+      "k": "ķ",
+      "l": "ḷŀłļĺľ",
+      "n": "ñňŋņń",
+      "o": "óôöòøōõơ",
+      "oe": "œ",
+      "r": "ŕ",
+      "s": "şšŝṣșſś",
+      "ss": "ß",
+      "t": "ťțțṭ",
+      "u": "úûüùůŭųūư",
+      "w": "ẅŵẃẁ",
+      "y": "ýÿŷỳ",
+      "z": "žŻźż",
+      "α": "ά",
+      "ε": "έ",
+      "η": "ή",
+      "ι": "ίΐϊ",
+      "ο": "ό",
+      "υ": "ύΰϋ",
+      "ω": "ώ",
+      "г": "ѓґ",
+      "е": "ё",
+      "и": "йѝ",
+      "к": "ќ",
+      "у": "ў",
+      "і": "ї",
+  };
+
+  class DiacriticRemover extends DiacriticMapperCore {
+      constructor(...dictionaries) {
+          super(dictionaries.length ? dictionaries : [I18N_ALL]);
+          Object.defineProperty(this, "dictionary", {
+              configurable: false,
+              enumerable: false,
+          });
+          return new Proxy(this, new DiacriticRemoverHandler());
+      }
+  }
+
+  return DiacriticRemover;
+
+}());
 //# sourceMappingURL=diacritic-remover.bundle.js.map

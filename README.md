@@ -81,7 +81,7 @@ diacriticRemover.à; //a
 
 ### Char diacritic map
 ```javascript
-diacriticRemover.matcher.i; //íîïi̇řìįī
+diacriticRemover.matcher.i; //íîïi̇řìįīi
 ```
 
 ### Char diacritic matcher (RegExp)

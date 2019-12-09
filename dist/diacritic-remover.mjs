@@ -7,8 +7,6 @@
  * Article: https://en.wikipedia.org/wiki/Diacritic
  * License: CC-BY-SA 3.0
  */
-'use strict';
-
 // Copyright Joyent, Inc. and other Node contributors.
 
 function isString(arg) {
@@ -72,7 +70,10 @@ class DiacriticMapperCore {
     constructor(dictionaries) {
         const dictionary = dictionaries
             .reduce((dictMerge, currentDict) => Object.entries(currentDict)
-            .reduce((accumulator, [letter, diacritics]) => (Object.assign(Object.assign({}, accumulator), { [letter]: (accumulator[letter] || "") + diacritics })), dictMerge), {});
+            .reduce((accumulator, [letter, diacritics]) => ({
+            ...accumulator,
+            [letter]: (accumulator[letter] || "") + diacritics,
+        }), dictMerge), {});
         Object.entries(dictionary)
             .forEach(([letter, diacritics]) => {
             dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
@@ -188,5 +189,5 @@ class DiacriticRemover extends DiacriticMapperCore {
     }
 }
 
-module.exports = DiacriticRemover;
-//# sourceMappingURL=diacritic-remover.js.map
+export default DiacriticRemover;
+//# sourceMappingURL=diacritic-remover.mjs.map
