@@ -1,18 +1,18 @@
-import DiacriticAbstractHandler from './diacritic-abstract-handler.class';
-import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
+import IDiacriticMapper from "../interfaces/diacritic-mapper.interface";
+import DiacriticAbstractHandler from "./diacritic-abstract-handler.class";
 
 class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
-    protected diacriticTrap(target: DiacriticMapperInterface, char: string): string {
+    protected diacriticTrap(target: IDiacriticMapper, char: string): string {
         const lowerCaseChar = super.diacriticTrap(target, char).toLowerCase();
         const insensitiveMatcher = new Set<string>([lowerCaseChar, lowerCaseChar.toUpperCase()]);
-        const diacritics = target.dictionary[lowerCaseChar] || '';
+        const diacritics = target.dictionary[lowerCaseChar] || "";
         [...diacritics]
-            .forEach(diacritic => {
+            .forEach((diacritic) => {
                 insensitiveMatcher.add(diacritic);
                 insensitiveMatcher.add(diacritic.toUpperCase());
             });
 
-        return [...insensitiveMatcher].sort().join('');
+        return [...insensitiveMatcher].sort().join("");
     }
 }
 

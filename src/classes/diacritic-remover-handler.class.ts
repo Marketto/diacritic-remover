@@ -1,9 +1,9 @@
-import DiacriticMapperInterface from '../interfaces/diacritic-mapper.interface';
-import DiacriticAbstractHandler from './diacritic-abstract-handler.class';
-import { isString } from 'util';
+import { isString } from "util";
+import IDiacriticMapper from "../interfaces/diacritic-mapper.interface";
+import DiacriticAbstractHandler from "./diacritic-abstract-handler.class";
 
 class DiacriticRemoverHandler extends DiacriticAbstractHandler {
-    protected diacriticTrap(target: DiacriticMapperInterface, char: string): string {
+    protected diacriticTrap(target: IDiacriticMapper, char: string): string {
         super.diacriticTrap(target, char);
         const upperCase: boolean = target.isUpperCase(char);
         const lowerCaseChar = char.toLowerCase();

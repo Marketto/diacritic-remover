@@ -1,10 +1,9 @@
 {
   "name": "@marketto/diacritic-remover",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Tool to replace diacritics in strings",
-  "main": "dist/diacritic-remover.js",
-  "module": "dist/diacritic-remover.es.js",
-  "browser": "dist/diacritic-remover.bundle.js",
+  "main": "dist/diacritic-remover.min.js",
+  "module": "dist/diacritic-remover.es.min.js",
   "types": "dist/diacritic-remover.d.ts",
   "bugs": {
     "url": "https://github.com/Marketto/diacritic-remover/issues"
@@ -39,16 +38,17 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.2",
     "ts-node": "^8.4.1",
-    "tslint": "^6.0.0-beta0",
+    "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
   "scripts": {
-    "release": "npm audit fix && npm run lint-fix && npm run test && npm run build",
-    "build": "node ./scripts/i18n-all.js && npx rollup -c",
+    "i18n": "node ./scripts/i18n-all.js",
+    "release": "npm run-script i18n && npm audit fix && npm run-script lint-fix && npm run-script test && npm run-script build",
+    "build": "npx rollup -c",
     "lint": "npx tslint -c tslint.json \"src/**/*.ts\"",
     "lint-fix": "npx tslint -c tslint.json \"src/**/*.ts\" --fix",
     "test": "npx nyc npx mocha",
-    "coverage": "mkdir coverage \n npm run test && npx nyc report --reporter=text-lcov | npx relcov > coverage/lcov.info"
+    "coverage": "mkdir coverage \n npm run-script test && npx nyc report --reporter=text-lcov | npx relcov > coverage/lcov.info"
   },
   "author": "Marco Ricupero <marco.ricupero@gmail.com>",
   "license": "MIT"

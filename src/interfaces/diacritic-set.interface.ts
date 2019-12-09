@@ -1,4 +1,4 @@
-interface DiacriticSetInterface {
-    [key:string]: string;
+interface IDiacriticSet {
+    [key: string]: string;
 }
-export default DiacriticSetInterface;
+export default IDiacriticSet;

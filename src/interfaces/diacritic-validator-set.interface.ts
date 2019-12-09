@@ -1,5 +1,5 @@
-interface DiacriticValidatorSetInterface {
-    [key:string]: RegExp;
+interface IDiacriticValidatorSet {
+    [key: string]: RegExp;
 }
 
-export default DiacriticValidatorSetInterface;
+export default IDiacriticValidatorSet;
