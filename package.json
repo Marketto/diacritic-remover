@@ -1,9 +1,9 @@
 {
   "name": "@marketto/diacritic-remover",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Tool to replace diacritics in strings",
-  "main": "dist/diacritic-remover.min.js",
-  "module": "dist/diacritic-remover.es.min.js",
+  "main": "dist/diacritic-remover.js",
+  "module": "dist/diacritic-remover.mjs",
   "types": "dist/diacritic-remover.d.ts",
   "bugs": {
     "url": "https://github.com/Marketto/diacritic-remover/issues"
@@ -31,6 +31,7 @@
     "mocha": "^6.2.2",
     "nyc": "^14.1.1",
     "relcov": "^1.0.6",
+    "rimraf": "^3.0.0",
     "rollup": "^1.26.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-license": "^0.12.1",
@@ -43,8 +44,8 @@
   },
   "scripts": {
     "i18n": "node ./scripts/i18n-all.js",
-    "release": "npm run-script i18n && npm audit fix && npm run-script lint-fix && npm run-script test && npm run-script build",
-    "build": "npx rollup -c",
+    "release": "npm audit fix && npm run-script i18n && npm audit fix && npm run-script lint-fix && npm run-script coverage && npm run-script build",
+    "build": "npx rimraf ./dist & npx rollup -c",
     "lint": "npx tslint -c tslint.json \"src/**/*.ts\"",
     "lint-fix": "npx tslint -c tslint.json \"src/**/*.ts\" --fix",
     "test": "npx nyc npx mocha",
