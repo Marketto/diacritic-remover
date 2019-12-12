@@ -6,7 +6,7 @@ abstract class DiacriticAbstractHandler implements ProxyHandler<IDiacriticMapper
         if (isString(prop) && prop.length <= 1) {
             return this.diacriticTrap(target, prop);
         }
-        return Reflect.get(target, prop, receiver);
+        return Reflect.get(target, prop, receiver) || Reflect.get(this, prop);
     }
 
     protected diacriticTrap(target: IDiacriticMapper, char: string): any {

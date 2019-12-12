@@ -6,7 +6,7 @@ interface IDiacriticValidatorSet {
     [key: string]: RegExp;
 }
 interface IDiacriticMapper {
-    [key: string]: string | any;
+    [key: string]: any;
     dictionary: IDiacriticSet;
     matcher: IDiacriticSet;
     insensitiveMatcher: IDiacriticSet;
@@ -18,7 +18,7 @@ interface IDiacriticMapper {
     isLowerCase(text: string): boolean;
 }
 declare class DiacriticMapperCore implements IDiacriticMapper {
-    [key: string]: string | any;
+    [key: string]: any;
     dictionary: IDiacriticSet;
     matcher: IDiacriticSet;
     insensitiveMatcher: IDiacriticSet;

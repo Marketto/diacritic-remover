@@ -3,7 +3,7 @@ import IDiacriticValidatorSet from "./diacritic-validator-set.interface";
 
 interface IDiacriticMapper {
 
-    [key: string]: string|any;
+    [key: string]: any;
     dictionary: IDiacriticSet;
 
     matcher: IDiacriticSet;

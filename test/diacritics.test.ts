@@ -1,9 +1,17 @@
 
 // tslint:disable: no-unused-expression
 import { expect } from "chai";
+import i18n_global from "../dictionaries/i18n/global.json";
+import LATIN_DICT from "../dictionaries/latin.json";
 import DiacriticRemover from "../src/diacritic-remover";
 
-const diacriticRemover = new DiacriticRemover();
+const diacriticRemover = new DiacriticRemover(LATIN_DICT, i18n_global);
+
+describe("Diacritic Dictionary Handler", () => {
+    it ("Should contain empty string", () => {
+        expect(diacriticRemover.dictionary[""]).to.be.equal("'·ʰʼ׳");
+    });
+});
 
 describe("Diacritic Remover Handler", () => {
     it ("Should return a for à", () => {
@@ -13,7 +21,16 @@ describe("Diacritic Remover Handler", () => {
         expect(diacriticRemover["3"]).to.be.equal("3");
     });
     it("Should return empty string for \'", () => {
-        expect(diacriticRemover["\'"]).to.be.equal("");
+        const [target] = Object.entries(diacriticRemover.dictionary)
+            .find(([k, v]) => v.includes("'")) || [];
+        expect(target).to.be.equal("");
+        expect(diacriticRemover["'"]).to.be.equal("");
+    });
+    it("Should return un-mapped chars", () => {
+        expect(diacriticRemover._).to.be.equal("_");
+        expect(diacriticRemover["@"]).to.be.equal("@");
+        expect(diacriticRemover[" "]).to.be.equal(" ");
+        expect(diacriticRemover["]"]).to.be.equal("]");
     });
 });
 
@@ -158,8 +175,16 @@ describe("Diacritic replace", () => {
     it ("Should return chars not matching diacritics", () => {
         expect(diacriticRemover.replace("sz33k")).to.be.equal("sz33k");
     });
+    it ("Should return 'access control' for 'àççèß control'", () => {
+        expect(diacriticRemover.replace("àççèß control")).to.be.equal("access control");
+    });
     it ("Should return '' for ''", () => {
         expect(diacriticRemover.replace("")).to.be.equal("");
+    });
+    it ("Should handle special chars", () => {
+        expect(diacriticRemover.replace("[0]")).to.be.equal("[0]");
+        expect(diacriticRemover.replace("[A]")).to.be.equal("[A]");
+        expect(diacriticRemover.replace("[é]")).to.be.equal("[e]");
     });
 });
 

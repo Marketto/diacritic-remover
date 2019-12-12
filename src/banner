@@ -2,8 +2,4 @@
  * <%= pkg.name %> <%= pkg.version %>
  * Copyright (c) 2019, <%= pkg.author %>
  * License: <%= pkg.license %>
- * ============================================================
- * I18N_ALL use material from Wikipedia
- * Article: https://en.wikipedia.org/wiki/Diacritic
- * License: CC-BY-SA 3.0
  */

@@ -53,7 +53,9 @@
 
 <script>
   import DiacriticRemover from '@marketto/diacritic-remover';
-  const diacriticRemover = new DiacriticRemover();
+  const LATIN_DICT = require('@marketto/diacritic-remover/dictionaries/latin.json');
+  const i18n_global = require('@marketto/diacritic-remover/dictionaries/i18n/global.json');
+  const diacriticRemover = new DiacriticRemover(LATIN_DICT, i18n_global);
 
   export default {
     data: () => ({

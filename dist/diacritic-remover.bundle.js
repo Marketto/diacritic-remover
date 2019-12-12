@@ -2,10 +2,6 @@
  * @marketto/diacritic-remover 1.0.5
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
- * ============================================================
- * I18N_ALL use material from Wikipedia
- * Article: https://en.wikipedia.org/wiki/Diacritic
- * License: CC-BY-SA 3.0
  */
 var DiacriticRemover = (function () {
   'use strict';
@@ -21,7 +17,7 @@ var DiacriticRemover = (function () {
           if (isString(prop) && prop.length <= 1) {
               return this.diacriticTrap(target, prop);
           }
-          return Reflect.get(target, prop, receiver);
+          return Reflect.get(target, prop, receiver) || Reflect.get(this, prop);
       }
       diacriticTrap(target, char) {
           return char;
@@ -73,10 +69,14 @@ var DiacriticRemover = (function () {
       constructor(dictionaries) {
           const dictionary = dictionaries
               .reduce((dictMerge, currentDict) => Object.entries(currentDict)
-              .reduce((accumulator, [letter, diacritics]) => (Object.assign(Object.assign({}, accumulator), { [letter]: (accumulator[letter] || "") + diacritics })), dictMerge), {});
+              .reduce((accumulator, [letter, diacritics]) => {
+              return Object.assign(Object.assign({}, accumulator), { [letter]: (accumulator[letter] || "") + diacritics });
+          }, dictMerge), {});
           Object.entries(dictionary)
               .forEach(([letter, diacritics]) => {
-              dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
+              if (isString(diacritics)) {
+                  dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
+              }
           });
           this.dictionary = Object.freeze(dictionary);
           this.matcher = new Proxy(this, new DiacriticMatcherHandler());
@@ -121,66 +121,22 @@ var DiacriticRemover = (function () {
   class DiacriticRemoverHandler extends DiacriticAbstractHandler {
       diacriticTrap(target, char) {
           super.diacriticTrap(target, char);
-          const upperCase = target.isUpperCase(char);
+          if (!char.trim() || char.length !== 1) {
+              return char;
+          }
           const lowerCaseChar = char.toLowerCase();
           const [plainChar] = Object.entries(target.dictionary)
-              .find(([, diacritics]) => isString(diacritics) && diacritics.includes(lowerCaseChar)) || [];
-          if (upperCase && plainChar) {
-              return plainChar.toUpperCase();
-          }
-          return isString(plainChar) ? plainChar : char;
+              .find(([letter, diacritics]) => isString(diacritics) &&
+              [letter, ...diacritics].includes(lowerCaseChar)) || [char];
+          return target.isUpperCase(char) ?
+              plainChar.toUpperCase() :
+              plainChar;
       }
   }
 
-  /**
-   * i18n jsons and i18n-all.ts use material from Wikipedia
-   * Article: https://en.wikipedia.org/wiki/Diacritic
-   * License: CC-BY-SA 3.0
-   */
-  var I18N_ALL = {
-      "": "ʰ'ʼ·׳",
-      "a": "áäâàåÄąāãă",
-      "ae": "æ",
-      "c": "çčćĉĊ",
-      "d": "đďðḏ",
-      "e": "éèêëěÊęėēё",
-      "g": "ğĝǧģĠġ",
-      "h": "ḥĥȟħ",
-      "i": "íîïi̇řìįī",
-      "ii": "î",
-      "ij": "ĳ",
-      "j": "ĵ",
-      "k": "ķ",
-      "l": "ḷŀłļĺľ",
-      "n": "ñňŋņń",
-      "o": "óôöòøōõơ",
-      "oe": "œ",
-      "r": "ŕ",
-      "s": "şšŝṣșſś",
-      "ss": "ß",
-      "t": "ťțțṭ",
-      "u": "úûüùůŭųūư",
-      "w": "ẅŵẃẁ",
-      "y": "ýÿŷỳ",
-      "z": "žŻźż",
-      "α": "ά",
-      "ε": "έ",
-      "η": "ή",
-      "ι": "ίΐϊ",
-      "ο": "ό",
-      "υ": "ύΰϋ",
-      "ω": "ώ",
-      "г": "ѓґ",
-      "е": "ё",
-      "и": "йѝ",
-      "к": "ќ",
-      "у": "ў",
-      "і": "ї",
-  };
-
   class DiacriticRemover extends DiacriticMapperCore {
       constructor(...dictionaries) {
-          super(dictionaries.length ? dictionaries : [I18N_ALL]);
+          super(dictionaries);
           Object.defineProperty(this, "dictionary", {
               configurable: false,
               enumerable: false,

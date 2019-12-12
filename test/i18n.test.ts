@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import * as i18n_es from "../i18n/es.json";
-import * as i18n_it from "../i18n/it.json";
-import * as i18n_ru from "../i18n/ru.json";
+import i18n_es from "../dictionaries/i18n/es.json";
+import i18n_it from "../dictionaries/i18n/it.json";
+import i18n_ru from "../dictionaries/i18n/ru.json";
 import DiacriticRemover from "../src/diacritic-remover";
 
 describe("Diacritic Remover Handler", () => {
