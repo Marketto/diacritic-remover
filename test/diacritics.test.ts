@@ -55,7 +55,7 @@ describe("Diacritic Insensitive Matcher", () => {
         expect(matchero).not.to.be.undefined;
         expect(matcherO).not.to.be.undefined;
         expect(diacriticRemover.insensitiveMatcher.o)
-            .to.equal([...matchero, ...matcherO].sort().join(""));
+            .to.equal(Array.from(new Set([...matchero, ...matcherO])).sort().join(""));
     });
     it("Should include char", () => {
         expect(diacriticRemover.insensitiveMatcher.m).to.include("m");
@@ -100,9 +100,10 @@ describe("Diacritic Validator", () => {
         expect(diacriticRemover.validator.j).to.be.a("RegExp");
         expect(diacriticRemover.validator.j.test("j")).to.be.true;
     });
-    it ("Should validate '' with ''", () => {
-        expect(diacriticRemover.validator[""]).to.be.a("RegExp");
-        expect(diacriticRemover.validator[""].test("'")).to.be.true;
+    it("Should validate t with markers", () => {
+        expect(diacriticRemover.validator.t).to.be.a("RegExp");
+        expect(diacriticRemover.validator.t.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.false;
+        expect(diacriticRemover.validator.T.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
     });
 });
 
@@ -140,6 +141,13 @@ describe("Diacritic Insensitive Validator", () => {
         expect(diacriticRemover.insensitiveValidator.K.test("k")).to.be.true;
         expect(diacriticRemover.insensitiveValidator.K.test("K")).to.be.true;
     });
+
+    it("Should validate t and T with markers", () => {
+        expect(diacriticRemover.validator.t).to.be.a("RegExp");
+        expect(diacriticRemover.insensitiveValidator.t.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
+        expect(diacriticRemover.insensitiveValidator.T.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
+    });
+
     it ("Should validate 3 with 3", () => {
         expect(diacriticRemover.insensitiveValidator[3]).to.be.a("RegExp");
         expect(diacriticRemover.insensitiveValidator[3].test("3")).to.be.true;
@@ -180,6 +188,9 @@ describe("Diacritic replace", () => {
     });
     it ("Should return '' for ''", () => {
         expect(diacriticRemover.replace("")).to.be.equal("");
+    });
+    it ("Should cleanup markers", () => {
+        expect(diacriticRemover.replace("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐e̸̢̹̣̤̙͚̱͓̖̹̻̣͇͗͂̃̈͝s̸̢̡̬͕͕̰̖͍̮̪̬̍̏̎̕͘ͅt̸̢̛̠̟̄̿ o̵̮͌̑k̶̨̖͓͎̝͈̰̹̫͚͓̠̜̓̈́̇̆̑͜ͅ")).to.be.equal("Test ok");
     });
     it ("Should handle special chars", () => {
         expect(diacriticRemover.replace("[0]")).to.be.equal("[0]");
