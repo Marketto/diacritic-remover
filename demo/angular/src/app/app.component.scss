@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  .logo {
+    height: 20vh;
+    margin: 2em;
+  }
+  .mat-card {
+    width: 80vw;
+    max-width: 30em;
+    margin: auto;
+    .mat-card-content {
+      display: flex;
+      flex-direction: column;
+
+      .mat-form-field {
+        margin: 1em;
+      }
+    }
+  }
+}
