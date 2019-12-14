@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import DiacriticRemover from '@marketto/diacritic-remover';
-const LATIN_DICT = require('@marketto/diacritic-remover/dictionaries/latin.json');
-const i18nGlobal = require('@marketto/diacritic-remover/dictionaries/i18n/global.json');
+import LATIN_DICT from '@marketto/diacritic-remover/dictionaries/latin.json';
+import i18nGlobal from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
 const diacriticRemover = new DiacriticRemover(LATIN_DICT, i18nGlobal);
 
 @Component({
@@ -10,8 +10,16 @@ const diacriticRemover = new DiacriticRemover(LATIN_DICT, i18nGlobal);
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public diacriticText = '';
+  private diacriticTextValue = '';
+  private cleanTextValue = '';
+  public get diacriticText(): string {
+    return this.diacriticTextValue;
+  }
+  public set diacriticText(text: string) {
+    this.diacriticTextValue = text;
+    this.cleanTextValue = diacriticRemover.replace(text);
+  }
   public get cleanText(): string {
-    return diacriticRemover.replace(this.diacriticText) || ' ';
+    return this.cleanTextValue || ' ';
   }
 }

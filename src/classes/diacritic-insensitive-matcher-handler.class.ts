@@ -10,7 +10,7 @@ class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
             lowerCaseChar,
             lowerCaseChar.toUpperCase(),
             ...lowerCaseDiacritics,
-            ...lowerCaseDiacritics.toUpperCase()
+            ...lowerCaseDiacritics.toUpperCase(),
         ]);
 
         return [...insensitiveMatcher].sort().join("");

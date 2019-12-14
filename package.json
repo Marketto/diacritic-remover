@@ -4,7 +4,7 @@
   "description": "Tool to replace diacritics in strings",
   "main": "dist/diacritic-remover.js",
   "module": "dist/diacritic-remover.mjs",
-  "types": "dist/diacritic-remover.d.ts",
+  "types": "src/diacritic-remover.ts",
   "bugs": {
     "url": "https://github.com/Marketto/diacritic-remover/issues"
   },

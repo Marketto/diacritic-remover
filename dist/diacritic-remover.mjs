@@ -10,37 +10,57 @@ function isString(arg) {
 }
 
 class DiacriticAbstractHandler {
+    constructor() {
+        this.LOWERCASE_MARKER_MATCHER = "\\p{Mark}";
+        this.UPPERCASE_MARKER_MATCHER = "\\P{Mark}";
+        this.MARKER_REGEXP = new RegExp(`(${this.LOWERCASE_MARKER_MATCHER})`, "gui");
+    }
     get(target, prop, receiver) {
-        if (isString(prop) && prop.length <= 1) {
-            return this.diacriticTrap(target, prop);
+        if (isString(prop)) {
+            const strProp = prop;
+            if (strProp.length <= 1) {
+                return this.diacriticTrap(target, strProp);
+            }
         }
         return Reflect.get(target, prop, receiver) || Reflect.get(this, prop);
     }
     diacriticTrap(target, char) {
-        return char;
+        return char.replace(this.MARKER_REGEXP, "");
     }
 }
 
 class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
     diacriticTrap(target, char) {
         const lowerCaseChar = super.diacriticTrap(target, char).toLowerCase();
-        const insensitiveMatcher = new Set([lowerCaseChar, lowerCaseChar.toUpperCase()]);
-        const diacritics = target.dictionary[lowerCaseChar] || "";
-        [...diacritics]
-            .forEach((diacritic) => {
-            insensitiveMatcher.add(diacritic);
-            insensitiveMatcher.add(diacritic.toUpperCase());
-        });
+        const lowerCaseDiacritics = target.dictionary[lowerCaseChar] || "";
+        const insensitiveMatcher = new Set([
+            lowerCaseChar,
+            lowerCaseChar.toUpperCase(),
+            ...lowerCaseDiacritics,
+            ...lowerCaseDiacritics.toUpperCase(),
+        ]);
         return [...insensitiveMatcher].sort().join("");
     }
 }
 
 class DiacriticValidatorHandler extends DiacriticAbstractHandler {
     diacriticTrap(target, char) {
-        super.diacriticTrap(target, char);
-        const diacritics = target.dictionary[char.toLowerCase()] || char;
-        const matchingDiacritics = target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;
-        return new RegExp(`[${char}${matchingDiacritics}]`, "u");
+        const cleanChar = super.diacriticTrap(target, char);
+        const diacritics = target.dictionary[char.toLowerCase()] || cleanChar;
+        if (!cleanChar && !diacritics) {
+            return this.MARKER_REGEXP;
+        }
+        let matchingDiacritics;
+        let markerMatcher;
+        if (target.isUpperCase(cleanChar)) {
+            matchingDiacritics = diacritics.toUpperCase();
+            markerMatcher = this.UPPERCASE_MARKER_MATCHER;
+        }
+        else {
+            matchingDiacritics = diacritics;
+            markerMatcher = this.LOWERCASE_MARKER_MATCHER;
+        }
+        return new RegExp(`[${cleanChar}${matchingDiacritics}](?:${markerMatcher})*`, "u");
     }
 }
 
@@ -120,15 +140,15 @@ class DiacriticMapperCore {
 
 class DiacriticRemoverHandler extends DiacriticAbstractHandler {
     diacriticTrap(target, char) {
-        super.diacriticTrap(target, char);
-        if (!char.trim() || char.length !== 1) {
-            return char;
+        const cleanChar = super.diacriticTrap(target, char);
+        if (!cleanChar.trim() || cleanChar.length !== 1) {
+            return cleanChar;
         }
-        const lowerCaseChar = char.toLowerCase();
+        const lowerCaseChar = cleanChar.toLowerCase();
         const [plainChar] = Object.entries(target.dictionary)
             .find(([letter, diacritics]) => isString(diacritics) &&
-            [letter, ...diacritics].includes(lowerCaseChar)) || [char];
-        return target.isUpperCase(char) ?
+            [letter, ...diacritics].includes(lowerCaseChar)) || [cleanChar];
+        return target.isUpperCase(cleanChar) ?
             plainChar.toUpperCase() :
             plainChar;
     }
