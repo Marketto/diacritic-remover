@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import DiacriticRemover from '@marketto/diacritic-remover';
-import LATIN_DICT from '@marketto/diacritic-remover/dictionaries/latin.json';
-import i18nGlobal from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
-const diacriticRemover = new DiacriticRemover(LATIN_DICT, i18nGlobal);
+import { DiacriticRemover } from '@marketto/diacritic-remover';
+const diacriticRemover = new DiacriticRemover();
 
 @Component({
   selector: 'app-root',

@@ -1,8 +1,6 @@
 const express = require("express");
-const DiacriticRemover = require("@marketto/diacritic-remover");
-const LATIN_DICT = require("@marketto/diacritic-remover/dictionaries/latin.json");
-const i18nGlobal = require("@marketto/diacritic-remover/dictionaries/i18n/global.json");
-const diacriticRemover = new DiacriticRemover(LATIN_DICT, i18nGlobal);
+const { DiacriticRemover } = require("@marketto/diacritic-remover");
+const diacriticRemover = new DiacriticRemover();
 const server = express();
 
 server.get("/diacritic-remover/:text", (req, res) => {
