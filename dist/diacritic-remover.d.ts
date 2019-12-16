@@ -1,4 +1,3 @@
-type DiacriticRemover_$0 = DiacriticRemover;
 interface IDiacriticSet {
     [key: string]: string;
 }
@@ -24,7 +23,7 @@ declare class DiacriticMapperCore implements IDiacriticMapper {
     insensitiveMatcher: IDiacriticSet;
     validator: IDiacriticValidatorSet;
     insensitiveValidator: IDiacriticValidatorSet;
-    constructor(dictionaries: IDiacriticSet[]);
+    constructor(dictionary?: IDiacriticSet);
     matcherBy(regexp: RegExp): string;
     replace(text: string): string;
     /**
@@ -48,4 +47,4 @@ declare class DiacriticRemover extends DiacriticMapperCore {
     [letter: string]: string | any;
     constructor(...dictionaries: IDiacriticSet[]);
 }
-export { DiacriticRemover_$0 as DiacriticRemover };
+export { DiacriticRemover, IDiacriticSet, IDiacriticValidatorSet, IDiacriticMapper };

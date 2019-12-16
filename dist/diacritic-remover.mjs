@@ -2,27 +2,26 @@
  * @marketto/diacritic-remover 1.0.5
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
+ * ===========================================
+ * Latin diacritic json file use material from Wikitionary article "Latin script"
+ * Source: https://en.wiktionary.org/wiki/Appendix:Latin_script
+ * License: CC-BY-SA 3.0
+ * ===========================================
+ * These diacritic i18n json files use material from Wikipedia article "Diacritic"
+ * Source: https://en.wikipedia.org/wiki/Diacritic
+ * License: CC-BY-SA 3.0
  */
-// Copyright Joyent, Inc. and other Node contributors.
-
-function isString(arg) {
-  return typeof arg === 'string';
-}
-
 class DiacriticAbstractHandler {
     constructor() {
-        this.LOWERCASE_MARKER_MATCHER = "\\p{Mark}";
-        this.UPPERCASE_MARKER_MATCHER = "\\P{Mark}";
+        this.LOWERCASE_MARKER_MATCHER = "\\p{M}";
+        this.UPPERCASE_MARKER_MATCHER = "\\P{M}";
         this.MARKER_REGEXP = new RegExp(`(${this.LOWERCASE_MARKER_MATCHER})`, "gui");
     }
     get(target, prop, receiver) {
-        if (isString(prop)) {
-            const strProp = prop;
-            if (strProp.length <= 1) {
-                return this.diacriticTrap(target, strProp);
-            }
+        if (prop.length <= 1) {
+            return this.diacriticTrap(target, prop);
         }
-        return Reflect.get(target, prop, receiver) || Reflect.get(this, prop);
+        return Reflect.get(target, prop, receiver);
     }
     diacriticTrap(target, char) {
         return char.replace(this.MARKER_REGEXP, "");
@@ -46,21 +45,17 @@ class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
 class DiacriticValidatorHandler extends DiacriticAbstractHandler {
     diacriticTrap(target, char) {
         const cleanChar = super.diacriticTrap(target, char);
-        const diacritics = target.dictionary[char.toLowerCase()] || cleanChar;
-        if (!cleanChar && !diacritics) {
-            return this.MARKER_REGEXP;
+        const diacritics = target.dictionary[char.toLowerCase()] || "";
+        let charMatcher = "";
+        let markerMatcher = "";
+        if (cleanChar || diacritics) {
+            charMatcher = `[${cleanChar}${diacritics}]`;
+            markerMatcher = `(?:[${this.LOWERCASE_MARKER_MATCHER}${this.UPPERCASE_MARKER_MATCHER}]*)`;
+            if (target.isUpperCase(cleanChar)) {
+                charMatcher = charMatcher.toUpperCase();
+            }
         }
-        let matchingDiacritics;
-        let markerMatcher;
-        if (target.isUpperCase(cleanChar)) {
-            matchingDiacritics = diacritics.toUpperCase();
-            markerMatcher = this.UPPERCASE_MARKER_MATCHER;
-        }
-        else {
-            matchingDiacritics = diacritics;
-            markerMatcher = this.LOWERCASE_MARKER_MATCHER;
-        }
-        return new RegExp(`[${cleanChar}${matchingDiacritics}](?:${markerMatcher})*`, "u");
+        return new RegExp(`^${charMatcher}${markerMatcher}$`, "u");
     }
 }
 
@@ -83,22 +78,8 @@ class DiacriticMatcherHandler extends DiacriticAbstractHandler {
 }
 
 class DiacriticMapperCore {
-    constructor(dictionaries) {
-        const dictionary = dictionaries
-            .reduce((dictMerge, currentDict) => Object.entries(currentDict)
-            .reduce((accumulator, [letter, diacritics]) => {
-            return {
-                ...accumulator,
-                [letter]: (accumulator[letter] || "") + diacritics,
-            };
-        }, dictMerge), {});
-        Object.entries(dictionary)
-            .forEach(([letter, diacritics]) => {
-            if (isString(diacritics)) {
-                dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
-            }
-        });
-        this.dictionary = Object.freeze(dictionary);
+    constructor(dictionary = {}) {
+        this.dictionary = dictionary;
         this.matcher = new Proxy(this, new DiacriticMatcherHandler());
         this.insensitiveMatcher = new Proxy(this, new DiacriticInsensitiveMatcherHandler());
         this.validator = new Proxy(this, new DiacriticValidatorHandler());
@@ -138,6 +119,12 @@ class DiacriticMapperCore {
     }
 }
 
+// Copyright Joyent, Inc. and other Node contributors.
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+
 class DiacriticRemoverHandler extends DiacriticAbstractHandler {
     diacriticTrap(target, char) {
         const cleanChar = super.diacriticTrap(target, char);
@@ -154,16 +141,78 @@ class DiacriticRemoverHandler extends DiacriticAbstractHandler {
     }
 }
 
+var i18nGlobal = {
+	"": "ʰ'ʼ·׳"
+};
+
+var LATIN_DICT = {
+	a: "àáâãäåāăąǎǟǡǻȁȃȧɐɑɒᴀᶏḁạảấầẩẫậắằẳẵặⱥａ",
+	ae: "æǣǽᴁᴂᴭᵆ",
+	b: "ƀƃɓʙᵬᶀḃḅḇｂ",
+	c: "cçćĉċčƈȼɕ̄ᴄḉｃ",
+	d: "dðþďđƌȡɖɗ̦ᴅᵭᶁᶑḋḍḏḑḓｄ",
+	db: "ȸ",
+	dz: "ǆǳ",
+	e: "èéêëēĕėęěǝȅȇȩɇəɛᴇᶒḕḗḙḛḝẹẻẽếềểễệⱸｅ",
+	eo: "ᴔ",
+	f: "fƒᵮᶂḟꜰﬀｆ",
+	g: "ĝğġģǥǧǵȝɠɢᶃḡｇ",
+	h: "hĥħȟɦʜʰ̱ḣḥḧḩḫẖⱨｈ",
+	i: "iìíîïĩīĭįıǐȉȋɨɩɪ̇ᵻᶖḭḯỉịｉ",
+	ij: "ĳ",
+	j: "jĵǰȷɉɟʄʝ̌ᴊｊ",
+	k: "ķƙǩᴋᶄḱḳḵⱪꝁｋ",
+	l: "lĺļľŀłƚȴɫɬɭʟᶅḷḹḻḽⱡｌ",
+	lj: "ǉ",
+	m: "ɱᴍᵯᶆḿṁṃｍ",
+	n: "nñńņňƞǹȵɲɳɴᵰᶇṅṇṉṋｎ",
+	nj: "ŋǌ̈",
+	o: "òóôõöøōŏőơǒǫǭǿȍȏȫȭȯȱɔɵᴏṍṏṑṓọỏốồổỗộớờởỡợⱺｏ",
+	oe: "œ",
+	p: "pƥƿ̃ᴘᵱᵽᶈṕṗｐ",
+	q: "ƣɋʠｑ",
+	qp: "ȹ",
+	r: "ŕŗřȑȓɍɼɽɾʀᵲᵳᶉṙṛṝṟꝛｒ",
+	s: "sśŝşšſșȿʂʃ̩ᵴᶊṡṣṥṧṩẛꜱｓ",
+	ss: "ß",
+	t: "tţťŧƫƭțȶʈᴛᵵṫṭṯṱẗⱦｔ",
+	u: "ùúûüũūŭůűųưǔǖǘǚǜȕȗʉʊᴜᵾṳṵṷṹṻụủứừửữựｕ",
+	ue: "ᵫ",
+	uo: "ȣ",
+	ut: "ᶙ",
+	v: "ʋʌᴠᶌṽṿⱱⱴｖ",
+	w: "ŵᴡẁẃẅẇẉẘⱳｗ",
+	x: "ᶍẋẍｘ",
+	y: "ýÿŷƴȳɏʏẏẙỳỵỷỹｙ",
+	z: "zźżžƶƹȥɀʐʑʒᴢᵶᶎẑẓẕⱬｚ"
+};
+
 class DiacriticRemover extends DiacriticMapperCore {
     constructor(...dictionaries) {
-        super(dictionaries);
+        super();
+        const mergedDictionaries = Object.freeze((dictionaries.length ? dictionaries : [LATIN_DICT, i18nGlobal])
+            .reduce((dictMerge, currentDict) => [...dictMerge, ...Object.entries(currentDict)], [])
+            .reduce((accumulator, [letter, diacritics]) => {
+            let targetSet = accumulator.find(([targetLetter]) => targetLetter === letter);
+            if (!targetSet) {
+                targetSet = [letter, []];
+                accumulator.push(targetSet);
+            }
+            targetSet[1] = [...targetSet[1], ...diacritics];
+            return accumulator;
+        }, [])
+            .reduce((accumulator, [letter, diacritics]) => ({
+            ...accumulator,
+            [letter]: [...(new Set(diacritics))].sort().join(""),
+        }), {}));
         Object.defineProperty(this, "dictionary", {
             configurable: false,
             enumerable: false,
+            value: mergedDictionaries,
         });
         return new Proxy(this, new DiacriticRemoverHandler());
     }
 }
 
-export default DiacriticRemover;
+export { DiacriticRemover };
 //# sourceMappingURL=diacritic-remover.mjs.map
