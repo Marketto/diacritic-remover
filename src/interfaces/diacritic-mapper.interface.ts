@@ -2,7 +2,6 @@ import IDiacriticSet from "./diacritic-set.interface";
 import IDiacriticValidatorSet from "./diacritic-validator-set.interface";
 
 interface IDiacriticMapper {
-
     [key: string]: any;
     dictionary: IDiacriticSet;
 

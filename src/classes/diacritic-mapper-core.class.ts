@@ -20,28 +20,8 @@ class DiacriticMapperCore implements IDiacriticMapper {
 
     public insensitiveValidator: IDiacriticValidatorSet;
 
-    public constructor(dictionaries: IDiacriticSet[]) {
-        const dictionary = dictionaries
-            .reduce((
-                dictMerge: IDiacriticSet,
-                currentDict: IDiacriticSet,
-            ) => Object.entries(currentDict)
-                .reduce((accumulator: IDiacriticSet, [letter, diacritics]) => {
-                    return {
-                        ...accumulator,
-                        [letter]: (accumulator[letter] || "") + diacritics,
-                    };
-                }, dictMerge),
-            {});
-
-        Object.entries(dictionary)
-            .forEach(([letter, diacritics]) => {
-                if (isString(diacritics)) {
-                    dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
-                }
-            });
-
-        this.dictionary = Object.freeze(dictionary);
+    public constructor(dictionary: IDiacriticSet = {}) {
+        this.dictionary = dictionary;
         this.matcher = new Proxy(this, new DiacriticMatcherHandler());
         this.insensitiveMatcher = new Proxy(this, new DiacriticInsensitiveMatcherHandler());
         this.validator = new Proxy(this, new DiacriticValidatorHandler());

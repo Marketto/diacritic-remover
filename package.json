@@ -4,7 +4,7 @@
   "description": "Tool to replace diacritics in strings",
   "main": "dist/diacritic-remover.js",
   "module": "dist/diacritic-remover.mjs",
-  "types": "src/diacritic-remover.ts",
+  "types": "dist/diacritic-remover.d.ts",
   "bugs": {
     "url": "https://github.com/Marketto/diacritic-remover/issues"
   },
@@ -22,10 +22,11 @@
   "dependencies": {},
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^0.1.3",
+    "@rollup/plugin-json": "^4.0.0",
     "@types/chai": "^4.2.5",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.12.7",
-    "@wessberg/rollup-plugin-ts": "^1.1.80",
+    "@wessberg/rollup-plugin-ts": "^1.1.83",
     "chai": "^4.2.0",
     "cross-env": "^6.0.3",
     "mocha": "^6.2.2",

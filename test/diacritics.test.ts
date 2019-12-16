@@ -1,11 +1,18 @@
 
 // tslint:disable: no-unused-expression
 import { expect } from "chai";
-import i18n_global from "../dictionaries/i18n/global.json";
-import LATIN_DICT from "../dictionaries/latin.json";
-import DiacriticRemover from "../src/diacritic-remover";
+import DiacriticRemover from "../src/classes/diacritic-remover.class";
 
-const diacriticRemover = new DiacriticRemover(LATIN_DICT, i18n_global);
+const diacriticRemover = new DiacriticRemover();
+
+describe("Diacritic Remover instance", () => {
+    it ("Should have constructor equal to DiacriticRemover", () => {
+        expect(diacriticRemover.constructor).to.be.equal(DiacriticRemover);
+    });
+    it ("Should return undefined for protected diacriticTrap", () => {
+        expect(diacriticRemover.diacriticTrap).to.be.undefined;
+    });
+});
 
 describe("Diacritic Dictionary Handler", () => {
     it ("Should contain empty string", () => {
@@ -38,10 +45,14 @@ describe("Diacritic Matcher", () => {
     it ("Should return i diacritics for i, including i itself", () => {
         expect(diacriticRemover.matcher.i).to.include("ì");
         expect(diacriticRemover.matcher.i).to.include("i");
+        expect(diacriticRemover.matcher.i).to.not.include("I");
     });
     it("Should include m and c", () => {
         expect(diacriticRemover.matcher.m).to.include("m");
         expect(diacriticRemover.matcher.c).to.include("c");
+    });
+    it("Should include 3 for 3", () => {
+        expect(diacriticRemover.matcher[3]).to.include("3");
     });
     it("Should return \'·ʰʼ׳ for empty string", () => {
         expect(diacriticRemover.matcher[""]).to.be.equal("\'·ʰʼ׳");
@@ -59,7 +70,11 @@ describe("Diacritic Insensitive Matcher", () => {
     });
     it("Should include char", () => {
         expect(diacriticRemover.insensitiveMatcher.m).to.include("m");
+        expect(diacriticRemover.insensitiveMatcher.m).to.include("M");
         expect(diacriticRemover.insensitiveMatcher.c).to.include("c");
+    });
+    it("Should include 3 for 3", () => {
+        expect(diacriticRemover.insensitiveMatcher[3]).to.include("3");
     });
     it("Should return \'\'·ʰʼ׳\' for empty string", () => {
         expect(diacriticRemover.insensitiveMatcher[""]).to.be.equal("\'·ʰʼ׳");
@@ -96,14 +111,18 @@ describe("Diacritic Validator", () => {
         expect(diacriticRemover.validator[7]).to.be.a("RegExp");
         expect(diacriticRemover.validator[7].test("7")).to.be.true;
     });
-    it ("Should validate j with j", () => {
+    it ("Should validate j with j but not J", () => {
         expect(diacriticRemover.validator.j).to.be.a("RegExp");
         expect(diacriticRemover.validator.j.test("j")).to.be.true;
     });
-    it("Should validate t with markers", () => {
+    it("Should validate t with t+markers but not T+markers", () => {
         expect(diacriticRemover.validator.t).to.be.a("RegExp");
+        expect(diacriticRemover.validator.t.test("t̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
         expect(diacriticRemover.validator.t.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.false;
+
+        expect(diacriticRemover.validator.T).to.be.a("RegExp");
         expect(diacriticRemover.validator.T.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
+        expect(diacriticRemover.validator.T.test("t̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.false;
     });
 });
 
@@ -142,10 +161,18 @@ describe("Diacritic Insensitive Validator", () => {
         expect(diacriticRemover.insensitiveValidator.K.test("K")).to.be.true;
     });
 
-    it("Should validate t and T with markers", () => {
-        expect(diacriticRemover.validator.t).to.be.a("RegExp");
-        expect(diacriticRemover.insensitiveValidator.t.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
-        expect(diacriticRemover.insensitiveValidator.T.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
+    it("Should validate t with t or T markers", () => {
+        const insensitiveValidator = diacriticRemover.insensitiveValidator.t;
+        expect(insensitiveValidator).to.be.a("RegExp");
+        expect(insensitiveValidator.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
+        expect(insensitiveValidator.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
+    });
+
+    it("Should validate T with t or T markers", () => {
+        const insensitiveValidator = diacriticRemover.insensitiveValidator.T;
+        expect(insensitiveValidator).to.be.a("RegExp");
+        expect(insensitiveValidator.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
+        expect(insensitiveValidator.test("T̸̡̢͓̳̜̪̟̳̠̻̖͐̂̍̅̔̂͋͂͐")).to.be.true;
     });
 
     it ("Should validate 3 with 3", () => {

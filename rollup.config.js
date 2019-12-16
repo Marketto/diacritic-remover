@@ -3,6 +3,7 @@ import pkg from "./package.json";
 import tsconfig from "./tsconfig.json";
 import { terser } from "rollup-plugin-terser";
 import builtins from "rollup-plugin-node-builtins";
+import jsonPlugin from "@rollup/plugin-json";
 import license from "rollup-plugin-license";
 import path from "path";
 
@@ -24,6 +25,7 @@ const baseConf = {
                 },
             },
             cwd: __dirname,
+            sourcemap: true,
         }),
     ],
 };
@@ -56,6 +58,10 @@ export default [
         plugins: [
             builtins(),
             rollupPluginTs({}),
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             ...baseConf.plugins,
         ],
     },
@@ -69,6 +75,10 @@ export default [
         plugins: [
             builtins(),
             rollupModuleConf,
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             ...baseConf.plugins,
         ],
     },
@@ -82,6 +92,10 @@ export default [
         plugins: [
             builtins(),
             rollupBrowserConf,
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             ...baseConf.plugins,
         ],
     },
@@ -95,6 +109,10 @@ export default [
         plugins: [
             builtins(),
             rollupBrowserConf,
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             terser(),
             ...baseConf.plugins,
         ],
