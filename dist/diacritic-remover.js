@@ -216,4 +216,4 @@ class DiacriticRemover extends DiacriticMapperCore {
 }
 
 exports.DiacriticRemover = DiacriticRemover;
-//# sourceMappingURL=diacritic-remover.js.map
+exports.default = DiacriticRemover;

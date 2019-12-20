@@ -14,8 +14,9 @@ const baseConf = {
     ],
     input: "src/diacritic-remover.ts",
     output: {
+        exports: "named",
         name: "DiacriticRemover",
-        sourcemap: true,
+        sourceMap: true,
     },
     plugins: [
         license({
@@ -30,20 +31,26 @@ const baseConf = {
     ],
 };
 
+const rollupCjsConf = rollupPluginTs({
+    tsconfig: {
+        ...tsconfig.compilerOptions,
+        declaration: false,
+    },
+});
+const rollupModuleConf = rollupPluginTs({
+    tsconfig: {
+        ...tsconfig.compilerOptions,
+        declaration: true,
+        module: "ESNext",
+        target: "ESNext",
+    },
+});
 const rollupBrowserConf = rollupPluginTs({
     tsconfig: {
         ...tsconfig.compilerOptions,
         declaration: false,
         module: "iife",
         target: "ES2015",
-    },
-});
-const rollupModuleConf = rollupPluginTs({
-    tsconfig: {
-        ...tsconfig.compilerOptions,
-        declaration: false,
-        module: "ESNext",
-        target: "ESNext",
     },
 });
 
@@ -57,7 +64,7 @@ export default [
         },
         plugins: [
             builtins(),
-            rollupPluginTs({}),
+            rollupCjsConf,
             jsonPlugin({
                 namedExports: false,
                 preferConst: true,

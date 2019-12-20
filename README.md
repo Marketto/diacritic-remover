@@ -64,21 +64,21 @@ const diacriticRemover = new DiacriticRemover(i18n_global, LATIN_DICT);
 ## L10N
 ### NodeJs
 ```javascript
-const DiacriticRemover = require('@marketto/diacritic-remover');
+const { DiacriticRemover } = require('@marketto/diacritic-remover');
 const i18n_global = require('@marketto/diacritic-remover/dictionaries/i18n/global.json');
 const i18n_it = require('@marketto/diacritic-remover/dictionaries/i18n/it.json');
 const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
 ### ES6
 ```javascript
-import DiacriticRemover from '@marketto/diacritic-remover';
+import { DiacriticRemover } from '@marketto/diacritic-remover';
 import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
 import i18n_it from '@marketto/diacritic-remover/dictionaries/i18n/it.json';
 const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
 ### TypeScript
 ```typescript
-import DiacriticRemover from '@marketto/diacritic-remover';
+import { DiacriticRemover } from '@marketto/diacritic-remover';
 import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
 import i18n_it from '@marketto/diacritic-remover/dictionaries/i18n/it.json';
 const diacriticRemover = new DiacriticRemover(i18n_it);

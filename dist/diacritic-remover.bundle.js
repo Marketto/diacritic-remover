@@ -215,8 +215,8 @@ var DiacriticRemover = (function (exports) {
     }
 
     exports.DiacriticRemover = DiacriticRemover;
+    exports.default = DiacriticRemover;
 
     return exports;
 
 }({}));
-//# sourceMappingURL=diacritic-remover.bundle.js.map

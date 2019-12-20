@@ -214,5 +214,5 @@ class DiacriticRemover extends DiacriticMapperCore {
     }
 }
 
+export default DiacriticRemover;
 export { DiacriticRemover };
-//# sourceMappingURL=diacritic-remover.mjs.map
