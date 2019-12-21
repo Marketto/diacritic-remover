@@ -1,5 +1,4 @@
-# diacritic-remover-express-demo
-***Express Demo for diacritic-remover***
+# Diacritic Remover Express Demo
 
 [![Buy me a coffee](https://img.shields.io/badge/Ko--fi-donate-blueviolet)](https://ko-fi.com/marketto)
 

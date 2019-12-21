@@ -1,3 +1,7 @@
+# Diacritic Remover React Demo
+
+[![Buy me a coffee](https://img.shields.io/badge/Ko--fi-donate-blueviolet)](https://ko-fi.com/marketto)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -66,3 +70,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+## LICENSE
+[MIT License](LICENSE)
+
+## AUTHORS
+[Marco Ricupero](mailto:marco.ricupero@gmail.com)

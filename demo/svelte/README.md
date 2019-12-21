@@ -1,17 +1,8 @@
-*Psst — looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+# Diacritic Remover Svelte Demo
 
----
+[![Buy me a coffee](https://img.shields.io/badge/Ko--fi-donate-blueviolet)](https://ko-fi.com/marketto)
 
-# svelte app
-
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
-
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
-
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
-```
+This project was bootstrapped with [Svelte Template](https://github.com/sveltejs/template).
 
 *Note that you will need to have [Node.js](https://nodejs.org) installed.*
 
@@ -91,3 +82,9 @@ Then, from within your project folder:
 npm run build
 surge public my-project.surge.sh
 ```
+
+## LICENSE
+[MIT License](LICENSE)
+
+## AUTHORS
+[Marco Ricupero](mailto:marco.ricupero@gmail.com)

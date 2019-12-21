@@ -30,23 +30,17 @@ yarn add @marketto/diacritic-remover
 ### NodeJs
 ```javascript
 const DiacriticRemover = require('@marketto/diacritic-remover');
-const i18n_global = require('@marketto/diacritic-remover/dictionaries/i18n/global.json');
-const LATIN_DICT = require('@marketto/diacritic-remover/dictionaries/latin.json');
-const diacriticRemover = new DiacriticRemover(i18n_global, LATIN_DICT);
+const diacriticRemover = new DiacriticRemover();
 ```
 ### ES6
 ```javascript
 import DiacriticRemover from '@marketto/diacritic-remover';
-import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
-import LATIN_DICT from '@marketto/diacritic-remover/dictionaries/latin.json';
-const diacriticRemover = new DiacriticRemover(i18n_global, LATIN_DICT);
+const diacriticRemover = new DiacriticRemover();
 ```
 ### TypeScript
 ```typescript
 import DiacriticRemover from '@marketto/diacritic-remover';
-import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
-import LATIN_DICT from '@marketto/diacritic-remover/dictionaries/latin.json';
-const diacriticRemover = new DiacriticRemover(i18n_global, LATIN_DICT);
+const diacriticRemover = new DiacriticRemover();
 ```
 ### Script
 ```html
@@ -64,21 +58,21 @@ const diacriticRemover = new DiacriticRemover(i18n_global, LATIN_DICT);
 ## L10N
 ### NodeJs
 ```javascript
-const { DiacriticRemover } = require('@marketto/diacritic-remover');
+const DiacriticRemover = require('@marketto/diacritic-remover');
 const i18n_global = require('@marketto/diacritic-remover/dictionaries/i18n/global.json');
 const i18n_it = require('@marketto/diacritic-remover/dictionaries/i18n/it.json');
 const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
 ### ES6
 ```javascript
-import { DiacriticRemover } from '@marketto/diacritic-remover';
+import DiacriticRemover from '@marketto/diacritic-remover';
 import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
 import i18n_it from '@marketto/diacritic-remover/dictionaries/i18n/it.json';
 const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
 ### TypeScript
 ```typescript
-import { DiacriticRemover } from '@marketto/diacritic-remover';
+import DiacriticRemover from '@marketto/diacritic-remover';
 import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
 import i18n_it from '@marketto/diacritic-remover/dictionaries/i18n/it.json';
 const diacriticRemover = new DiacriticRemover(i18n_it);
@@ -92,9 +86,17 @@ const diacriticRemover = new DiacriticRemover(i18n_it);
         fetch("https://unpkg.com/browse/@marketto/diacritic-remover/dictionaries/i18n/global.json")
     ])
         .then(responses => responses.map(response => response.json()))
-        .then(dictionaries => window.diacriticRemover = new DiacriticRemover(...dictionaries));
+        .then(dictionaries => new DiacriticRemover(...dictionaries));
 </script>
 ```
+
+## DEMO
+* [Angular](demo/angular)
+* [Express](demo/express)
+* [jQuery](demo/jquery)
+* [React](demo/react)
+* [Svelte](demo/svelte)
+* [Vue](demo/vue)
 
 ## USAGE
 
