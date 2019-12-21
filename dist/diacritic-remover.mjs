@@ -1,5 +1,5 @@
 /**
- * @marketto/diacritic-remover 1.0.5
+ * @marketto/diacritic-remover 1.0.6
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
  * ===========================================
@@ -215,4 +215,3 @@ class DiacriticRemover extends DiacriticMapperCore {
 }
 
 export default DiacriticRemover;
-export { DiacriticRemover };

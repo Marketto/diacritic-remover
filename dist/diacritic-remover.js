@@ -1,5 +1,5 @@
 /**
- * @marketto/diacritic-remover 1.0.5
+ * @marketto/diacritic-remover 1.0.6
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
  * ===========================================
@@ -12,8 +12,6 @@
  * License: CC-BY-SA 3.0
  */
 'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
 
 class DiacriticAbstractHandler {
     constructor() {
@@ -215,5 +213,4 @@ class DiacriticRemover extends DiacriticMapperCore {
     }
 }
 
-exports.DiacriticRemover = DiacriticRemover;
-exports.default = DiacriticRemover;
+module.exports = DiacriticRemover;

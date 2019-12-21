@@ -1,10 +1,14 @@
 {
   "name": "svelte-app",
+  "description": "DiacriticRemover Svelte Demo",
   "version": "1.0.0",
+  "author": "Marco Ricupero <marco.ricupero@gmail.com>",
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv public"
+    "start": "rollup -c -w",
+    "serve": "sirv public"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^6.0.0",
@@ -21,6 +25,7 @@
     "svelte-preprocess": "^3.2.6"
   },
   "dependencies": {
+    "@marketto/diacritic-remover": "latest",
     "sirv-cli": "^0.4.4"
   }
 }
