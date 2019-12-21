@@ -1,4 +1,4 @@
-import { isString } from "util";
+import { isString, isUndefined } from "util";
 import IDiacriticMapper from "../interfaces/diacritic-mapper.interface";
 import IDiacriticSet from "../interfaces/diacritic-set.interface";
 import IDiacriticValidatorSet from "../interfaces/diacritic-validator-set.interface";
@@ -9,7 +9,7 @@ import DiacriticValidatorHandler from "./diacritic-validator-handler.class";
 
 class DiacriticMapperCore implements IDiacriticMapper {
 
-    [key: string]: string|any;
+    [key: string]: any;
 
     public dictionary: IDiacriticSet;
     public matcher: IDiacriticSet;
@@ -20,24 +20,8 @@ class DiacriticMapperCore implements IDiacriticMapper {
 
     public insensitiveValidator: IDiacriticValidatorSet;
 
-    public constructor(dictionaries: IDiacriticSet[]) {
-        const dictionary = dictionaries
-            .reduce((
-                dictMerge: IDiacriticSet,
-                currentDict: IDiacriticSet,
-            ) => Object.entries(currentDict)
-                .reduce((accumulator: IDiacriticSet, [letter, diacritics]) => ({
-                    ...accumulator,
-                    [letter]: (accumulator[letter] || "") + diacritics,
-                }), dictMerge),
-            {});
-
-        Object.entries(dictionary)
-            .forEach(([letter, diacritics]) => {
-                dictionary[letter] = [...(new Set([...diacritics]))].sort().join("");
-            });
-
-        this.dictionary = Object.freeze(dictionary);
+    public constructor(dictionary: IDiacriticSet = {}) {
+        this.dictionary = dictionary;
         this.matcher = new Proxy(this, new DiacriticMatcherHandler());
         this.insensitiveMatcher = new Proxy(this, new DiacriticInsensitiveMatcherHandler());
         this.validator = new Proxy(this, new DiacriticValidatorHandler());

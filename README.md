@@ -29,43 +29,69 @@ yarn add @marketto/diacritic-remover
 
 ### NodeJs
 ```javascript
-const DiaCriticRemover = require('@marketto/diacritic-remover');
-const diacriticRemover = new DiacriticRemover(); //It loads all diacritics by default
+const DiacriticRemover = require('@marketto/diacritic-remover');
+const diacriticRemover = new DiacriticRemover();
 ```
 ### ES6
 ```javascript
-import DiaCriticRemover from '@marketto/diacritic-remover';
-const diacriticRemover = new DiacriticRemover(); //It loads all diacritics by default
+import DiacriticRemover from '@marketto/diacritic-remover';
+const diacriticRemover = new DiacriticRemover();
 ```
 ### TypeScript
 ```typescript
-import DiaCriticRemover from '@marketto/diacritic-remover';
-const diacriticRemover = new DiacriticRemover(); //It loads all diacritics by default
+import DiacriticRemover from '@marketto/diacritic-remover';
+const diacriticRemover = new DiacriticRemover();
 ```
 ### Script
 ```html
 <script src="https://unpkg.com/browse/@marketto/diacritic-remover/dist/diacritic-remover.bundle.min.js"></script>
 <script>
-    var diacriticRemover = new DiacriticRemover(); //It loads all diacritics by default
+    const diacriticRemover = new DiacriticRemover(...dictionaries)
 </script>
 ```
 
 ## L10N
 ### NodeJs
 ```javascript
-const i18n_it = require('@marketto/diacritic-remover/i18n/it.json');
+const DiacriticRemover = require('@marketto/diacritic-remover');
+const i18n_global = require('@marketto/diacritic-remover/dictionaries/i18n/global.json');
+const i18n_it = require('@marketto/diacritic-remover/dictionaries/i18n/it.json');
 const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
 ### ES6
 ```javascript
-import * as i18n_it from '@marketto/diacritic-remover/i18n/it.json';
+import DiacriticRemover from '@marketto/diacritic-remover';
+import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
+import i18n_it from '@marketto/diacritic-remover/dictionaries/i18n/it.json';
 const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
 ### TypeScript
 ```typescript
-import * as i18n_it from '@marketto/diacritic-remover/i18n/it.json';
+import DiacriticRemover from '@marketto/diacritic-remover';
+import i18n_global from '@marketto/diacritic-remover/dictionaries/i18n/global.json';
+import i18n_it from '@marketto/diacritic-remover/dictionaries/i18n/it.json';
 const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
+### Script
+```html
+<script src="https://unpkg.com/browse/@marketto/diacritic-remover/dist/diacritic-remover.bundle.min.js"></script>
+<script>
+    Promise.all([
+        fetch("https://unpkg.com/browse/@marketto/diacritic-remover/dictionaries/i18n/it.json")
+        fetch("https://unpkg.com/browse/@marketto/diacritic-remover/dictionaries/i18n/global.json")
+    ])
+        .then(responses => responses.map(response => response.json()))
+        .then(dictionaries => new DiacriticRemover(...dictionaries));
+</script>
+```
+
+## DEMO
+* [Angular](https://github.com/Marketto/diacritic-remover/tree/master/demo/angular)
+* [Express](https://github.com/Marketto/diacritic-remover/tree/master/demo/express)
+* [jQuery](https://github.com/Marketto/diacritic-remover/tree/master/demo/jquery)
+* [React](https://github.com/Marketto/diacritic-remover/tree/master/demo/react)
+* [Svelte](https://github.com/Marketto/diacritic-remover/tree/master/demo/svelte)
+* [Vue](https://github.com/Marketto/diacritic-remover/tree/master/demo/vue)
 
 ## USAGE
 
@@ -107,8 +133,15 @@ diacriticRemover.matcherBy(/^[au]$/); //áäâàåÄąāãăúûüùůŭųūư
 ## LICENSE
 [MIT License](LICENSE)
 
-## DIACRITIC ASSET LICENSE AND AUTHOR
-I18n diacritics jsons files, the i18n/i18n_all.const.ts file and the I18N_ALL const, inside dist files, use material from Wikipedia article [Diacritic](https://en.wikipedia.org/wiki/Diacritic), which is released under the [Creative Commons Attribution-Share-Alike License 3.0 (CC-BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/)
+## DIACRITIC ASSETS LICENSE AND AUTHOR
+
+### [Latin Diacritic Dictionary](dictionaries/README.MD)
+Latin diacritic json file use material from Wikitionary article [Latin script](https://en.wiktionary.org/wiki/Appendix:Latin_script),
+which is released under the [Creative Commons Attribution-Share-Alike License 3.0 (CC-BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/)
+
+### [I18N Diacritic Dictionaries](dictionaries/i18n/README.MD)
+These diacritic i18n json files use material from Wikipedia article [Diacritic](https://en.wikipedia.org/wiki/Diacritic),
+which is released under the [Creative Commons Attribution-Share-Alike License 3.0 (CC-BY-SA 3.0)](https://creativecommons.org/licenses/by-sa/3.0/)
 
 ## AUTHOR
 [Marco Ricupero](mailto:marco.ricupero@gmail.com)

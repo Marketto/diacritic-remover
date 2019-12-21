@@ -2,8 +2,12 @@
  * <%= pkg.name %> <%= pkg.version %>
  * Copyright (c) 2019, <%= pkg.author %>
  * License: <%= pkg.license %>
- * ============================================================
- * I18N_ALL use material from Wikipedia
- * Article: https://en.wikipedia.org/wiki/Diacritic
+ * ===========================================
+ * Latin diacritic json file use material from Wikitionary article "Latin script"
+ * Source: https://en.wiktionary.org/wiki/Appendix:Latin_script
+ * License: CC-BY-SA 3.0
+ * ===========================================
+ * These diacritic i18n json files use material from Wikipedia article "Diacritic"
+ * Source: https://en.wikipedia.org/wiki/Diacritic
  * License: CC-BY-SA 3.0
  */

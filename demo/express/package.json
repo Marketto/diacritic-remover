@@ -1,0 +1,16 @@
+{
+  "name": "diacritic-remover-express-demo",
+  "description": "DiacriticRemover Node/Express Demo",
+  "version": "1.0.0",
+  "author": "Marco Ricupero <marco.ricupero@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@marketto/diacritic-remover": "latest",
+    "express": "^4.17.1"
+  }
+}

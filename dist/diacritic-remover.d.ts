@@ -1,4 +1,3 @@
-type DiacriticRemover_$0 = DiacriticRemover;
 interface IDiacriticSet {
     [key: string]: string;
 }
@@ -6,7 +5,7 @@ interface IDiacriticValidatorSet {
     [key: string]: RegExp;
 }
 interface IDiacriticMapper {
-    [key: string]: string | any;
+    [key: string]: any;
     dictionary: IDiacriticSet;
     matcher: IDiacriticSet;
     insensitiveMatcher: IDiacriticSet;
@@ -18,13 +17,13 @@ interface IDiacriticMapper {
     isLowerCase(text: string): boolean;
 }
 declare class DiacriticMapperCore implements IDiacriticMapper {
-    [key: string]: string | any;
+    [key: string]: any;
     dictionary: IDiacriticSet;
     matcher: IDiacriticSet;
     insensitiveMatcher: IDiacriticSet;
     validator: IDiacriticValidatorSet;
     insensitiveValidator: IDiacriticValidatorSet;
-    constructor(dictionaries: IDiacriticSet[]);
+    constructor(dictionary?: IDiacriticSet);
     matcherBy(regexp: RegExp): string;
     replace(text: string): string;
     /**
@@ -48,4 +47,4 @@ declare class DiacriticRemover extends DiacriticMapperCore {
     [letter: string]: string | any;
     constructor(...dictionaries: IDiacriticSet[]);
 }
-export { DiacriticRemover_$0 as DiacriticRemover };
+export { DiacriticRemover as default };

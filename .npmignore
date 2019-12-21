@@ -4,7 +4,6 @@
 .sonarlint
 .vscode
 coverage
-i18n
 demo
 docs
 scripts

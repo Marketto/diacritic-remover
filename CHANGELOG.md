@@ -1,5 +1,15 @@
 
 # *diacritic-remover* changelog
+## 1.0.6
+* Improved dictionaries
+* Optimized packages (js, mjs, iife-bundle)
+* Demo
+  * Angular (ts)
+  * Express (cjs)
+  * jQuery (bundle)
+  * React (mjs)
+  * Svelte (mjs)
+  * Vue (mjs)
 ## 1.0.5
 * Fixed package.json and rollup config
 * dist contains es module, cjs, iife bundle and iife bundle minified

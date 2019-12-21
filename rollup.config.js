@@ -3,6 +3,7 @@ import pkg from "./package.json";
 import tsconfig from "./tsconfig.json";
 import { terser } from "rollup-plugin-terser";
 import builtins from "rollup-plugin-node-builtins";
+import jsonPlugin from "@rollup/plugin-json";
 import license from "rollup-plugin-license";
 import path from "path";
 
@@ -11,10 +12,11 @@ const baseConf = {
         ...Object.keys(pkg.dependencies || {}),
         "i18n/all",
     ],
-    input: "src/diacritic-remover.ts",
+    input: "src/classes/diacritic-remover.class.ts",
     output: {
+        exports: "default",
         name: "DiacriticRemover",
-        sourcemap: true,
+        sourceMap: true,
     },
     plugins: [
         license({
@@ -24,24 +26,34 @@ const baseConf = {
                 },
             },
             cwd: __dirname,
+            sourcemap: true,
         }),
     ],
 };
 
+const rollupCjsConf = rollupPluginTs({
+    tsconfig: {
+        ...tsconfig.compilerOptions,
+        declaration: false,
+    },
+});
+const rollupModuleConf = rollupPluginTs({
+    tsconfig: {
+        ...tsconfig.compilerOptions,
+        declaration: true,
+        module: "ESNext",
+        target: "ESNext",
+    },
+});
 const rollupBrowserConf = rollupPluginTs({
     tsconfig: {
         ...tsconfig.compilerOptions,
         declaration: false,
         module: "iife",
         target: "ES2015",
-    },
-});
-const rollupModuleConf = rollupPluginTs({
-    tsconfig: {
-        ...tsconfig.compilerOptions,
-        declaration: false,
-        module: "ESNext",
-        target: "ESNext",
+        namedExports: {
+            
+        }
     },
 });
 
@@ -55,7 +67,11 @@ export default [
         },
         plugins: [
             builtins(),
-            rollupPluginTs({}),
+            rollupCjsConf,
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             ...baseConf.plugins,
         ],
     },
@@ -69,6 +85,10 @@ export default [
         plugins: [
             builtins(),
             rollupModuleConf,
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             ...baseConf.plugins,
         ],
     },
@@ -82,6 +102,10 @@ export default [
         plugins: [
             builtins(),
             rollupBrowserConf,
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             ...baseConf.plugins,
         ],
     },
@@ -95,6 +119,10 @@ export default [
         plugins: [
             builtins(),
             rollupBrowserConf,
+            jsonPlugin({
+                namedExports: false,
+                preferConst: true,
+            }),
             terser(),
             ...baseConf.plugins,
         ],

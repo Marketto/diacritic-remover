@@ -3,10 +3,18 @@ import DiacriticAbstractHandler from "./diacritic-abstract-handler.class";
 
 class DiacriticValidatorHandler extends DiacriticAbstractHandler {
     protected diacriticTrap(target: IDiacriticMapper, char: string): RegExp {
-        super.diacriticTrap(target, char);
-        const diacritics = target.dictionary[char.toLowerCase()] || char;
-        const matchingDiacritics = target.isUpperCase(char) ? diacritics.toUpperCase() : diacritics;
-        return new RegExp(`[${char}${matchingDiacritics}]`, "u");
+        const cleanChar = super.diacriticTrap(target, char);
+        const diacritics = target.dictionary[char.toLowerCase()] || "";
+        let charMatcher = "";
+        let markerMatcher = "";
+        if (cleanChar || diacritics) {
+            charMatcher = `[${cleanChar}${diacritics}]`;
+            markerMatcher = `(?:[${this.LOWERCASE_MARKER_MATCHER}${this.UPPERCASE_MARKER_MATCHER}]*)`;
+            if (target.isUpperCase(cleanChar)) {
+                charMatcher = charMatcher.toUpperCase();
+            }
+        }
+        return new RegExp(`^${charMatcher}${markerMatcher}$`, "u");
     }
 }
 
