@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DiacriticRemover } from '@marketto/diacritic-remover';
+import DiacriticRemover from '@marketto/diacritic-remover';
 const diacriticRemover = new DiacriticRemover();
 
 @Component({

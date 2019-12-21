@@ -1,5 +1,5 @@
 const express = require("express");
-const { DiacriticRemover } = require("@marketto/diacritic-remover");
+const DiacriticRemover = require("@marketto/diacritic-remover");
 const diacriticRemover = new DiacriticRemover();
 const server = express();
 

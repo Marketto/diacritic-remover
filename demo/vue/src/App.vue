@@ -52,7 +52,7 @@
 </template>
 
 <script>
-  import { DiacriticRemover } from '@marketto/diacritic-remover';
+  import DiacriticRemover from '@marketto/diacritic-remover';
   const diacriticRemover = new DiacriticRemover();
 
   export default {

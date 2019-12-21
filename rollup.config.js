@@ -14,7 +14,7 @@ const baseConf = {
     ],
     input: "src/diacritic-remover.ts",
     output: {
-        exports: "named",
+        exports: "default",
         name: "DiacriticRemover",
         sourceMap: true,
     },
@@ -51,6 +51,9 @@ const rollupBrowserConf = rollupPluginTs({
         declaration: false,
         module: "iife",
         target: "ES2015",
+        namedExports: {
+            
+        }
     },
 });
 

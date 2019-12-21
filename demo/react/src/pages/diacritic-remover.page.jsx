@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import { DiacriticRemover } from "@marketto/diacritic-remover";
+import DiacriticRemover from "@marketto/diacritic-remover";
 
 import "./diacritic-remover.page.css";
 
