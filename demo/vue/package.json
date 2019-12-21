@@ -1,16 +1,17 @@
 {
   "name": "diacritic-remover-vue-demo",
-  "version": "0.1.0",
-  "private": true,
+  "description": "DiacriticRemover Vue Demo",
+  "version": "1.0.0",
   "author": "Marco Ricupero <marco.ricupero@gmail.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@marketto/diacritic-remover": "^1.0.5",
+    "@marketto/diacritic-remover": "latest",
     "@mdi/font": "^3.6.95",
     "core-js": "^3.4.3",
     "roboto-fontface": "*",

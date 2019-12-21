@@ -1,6 +1,10 @@
 {
   "name": "diacritic-remover-angular-demo",
-  "version": "0.0.0",
+  "description": "DiacriticRemover Angular Demo",
+  "version": "1.0.0",
+  "author": "Marco Ricupero <marco.ricupero@gmail.com>",
+  "license": "MIT",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +13,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~8.2.14",
     "@angular/cdk": "~8.2.3",
@@ -21,14 +24,14 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "@marketto/diacritic-remover": "^1.0.5",
+    "@marketto/diacritic-remover": "latest",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.20",
+    "@angular-devkit/build-angular": "^0.803.21",
     "@angular/cli": "^8.3.20",
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",

@@ -11,6 +11,12 @@
         >
           <v-col
             cols="12"
+            align="center"
+          >
+            <img alt="vue-logo" src="./assets/logo.png">
+          </v-col>
+          <v-col
+            cols="12"
             sm="8"
             md="4"
           >
@@ -64,3 +70,6 @@
     }),
   }
 </script>
+<style lang="sass">
+
+</style>
