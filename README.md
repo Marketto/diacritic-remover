@@ -46,12 +46,7 @@ const diacriticRemover = new DiacriticRemover();
 ```html
 <script src="https://unpkg.com/browse/@marketto/diacritic-remover/dist/diacritic-remover.bundle.min.js"></script>
 <script>
-    Promise.all([
-        fetch("https://unpkg.com/browse/@marketto/diacritic-remover/dictionaries/latin.json")
-        fetch("https://unpkg.com/browse/@marketto/diacritic-remover/dictionaries/i18n/global.json")
-    ])
-        .then(responses => responses.map(response => response.json()))
-        .then(dictionaries => window.diacriticRemover = new DiacriticRemover(...dictionaries));
+    const diacriticRemover = new DiacriticRemover(...dictionaries)
 </script>
 ```
 
@@ -91,12 +86,12 @@ const diacriticRemover = new DiacriticRemover(i18n_it);
 ```
 
 ## DEMO
-* [Angular](demo/angular)
-* [Express](demo/express)
-* [jQuery](demo/jquery)
-* [React](demo/react)
-* [Svelte](demo/svelte)
-* [Vue](demo/vue)
+* [Angular](https://github.com/Marketto/diacritic-remover/tree/master/demo/angular)
+* [Express](https://github.com/Marketto/diacritic-remover/tree/master/demo/express)
+* [jQuery](https://github.com/Marketto/diacritic-remover/tree/master/demo/jquery)
+* [React](https://github.com/Marketto/diacritic-remover/tree/master/demo/react)
+* [Svelte](https://github.com/Marketto/diacritic-remover/tree/master/demo/svelte)
+* [Vue](https://github.com/Marketto/diacritic-remover/tree/master/demo/vue)
 
 ## USAGE
 

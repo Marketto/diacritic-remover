@@ -12,7 +12,7 @@ const baseConf = {
         ...Object.keys(pkg.dependencies || {}),
         "i18n/all",
     ],
-    input: "src/diacritic-remover.ts",
+    input: "src/classes/diacritic-remover.class.ts",
     output: {
         exports: "default",
         name: "DiacriticRemover",
