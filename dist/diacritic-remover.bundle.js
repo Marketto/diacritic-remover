@@ -1,5 +1,5 @@
 /**
- * @marketto/diacritic-remover 1.0.5
+ * @marketto/diacritic-remover 1.0.6
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
  * ===========================================
@@ -11,7 +11,7 @@
  * Source: https://en.wikipedia.org/wiki/Diacritic
  * License: CC-BY-SA 3.0
  */
-var DiacriticRemover = (function (exports) {
+var DiacriticRemover = (function () {
     'use strict';
 
     class DiacriticAbstractHandler {
@@ -214,9 +214,6 @@ var DiacriticRemover = (function (exports) {
         }
     }
 
-    exports.DiacriticRemover = DiacriticRemover;
-    exports.default = DiacriticRemover;
+    return DiacriticRemover;
 
-    return exports;
-
-}({}));
+}());
