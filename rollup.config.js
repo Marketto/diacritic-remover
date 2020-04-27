@@ -49,11 +49,8 @@ const rollupBrowserConf = rollupPluginTs({
     tsconfig: {
         ...tsconfig.compilerOptions,
         declaration: false,
-        module: "iife",
+        module: "es2015",
         target: "ES2015",
-        namedExports: {
-            
-        }
     },
 });
 

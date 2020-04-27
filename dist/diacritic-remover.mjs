@@ -1,5 +1,5 @@
 /**
- * @marketto/diacritic-remover 1.0.6
+ * @marketto/diacritic-remover 1.0.7
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
  * ===========================================
@@ -13,18 +13,39 @@
  */
 class DiacriticAbstractHandler {
     constructor() {
+        this.USE_VALIDATOR = false;
+        this.FALLBACK_MARKER_MATCHER = "̸̵̶̡̢̨̛͓̳̜̪̟̠̻̖̹̣̤̙͚̱͇̬͕̰͍̮͎̝͈̫͐̂̍̅̔͋͂͗̃̈̏̎̄̿͌̑̓̈́̇̆̕͘͜͝ͅ";
         this.LOWERCASE_MARKER_MATCHER = "\\p{M}";
         this.UPPERCASE_MARKER_MATCHER = "\\P{M}";
-        this.MARKER_REGEXP = new RegExp(`(${this.LOWERCASE_MARKER_MATCHER})`, "gui");
+        this.IS_MARKER_REPLACING_AVAILABLE = false;
+        try {
+            this.IS_MARKER_REPLACING_AVAILABLE = !!(new RegExp(`(${this.LOWERCASE_MARKER_MATCHER})`, "gui"));
+        }
+        catch (err) {
+            return;
+        }
     }
     get(target, prop, receiver) {
         if (prop.length <= 1) {
-            return this.diacriticTrap(target, prop);
+            return this.USE_VALIDATOR ? this.diacriticValidatorTrap(target, prop) : this.diacriticTrap(target, prop);
         }
         return Reflect.get(target, prop, receiver);
     }
     diacriticTrap(target, char) {
-        return char.replace(this.MARKER_REGEXP, "");
+        return char.replace(this.diacriticValidatorTrap(target, char), "");
+    }
+    diacriticValidatorTrap(target, char) {
+        return this.INSENSITIVE_MARKER_REGEXP;
+    }
+    get INSENSITIVE_MARKER_REGEXP() {
+        return new RegExp(this.IS_MARKER_REPLACING_AVAILABLE ?
+            `(${this.LOWERCASE_MARKER_MATCHER})` :
+            `([${this.FALLBACK_MARKER_MATCHER}]*)`, "gui");
+    }
+    get INSENSITIVE_MARKER_MATCHER() {
+        return this.IS_MARKER_REPLACING_AVAILABLE ?
+            `[${this.LOWERCASE_MARKER_MATCHER}${this.UPPERCASE_MARKER_MATCHER}]*` :
+            `[${this.FALLBACK_MARKER_MATCHER}${this.FALLBACK_MARKER_MATCHER.toUpperCase()}]*`;
     }
 }
 
@@ -43,14 +64,18 @@ class DiacriticInsensitiveMatcherHandler extends DiacriticAbstractHandler {
 }
 
 class DiacriticValidatorHandler extends DiacriticAbstractHandler {
-    diacriticTrap(target, char) {
-        const cleanChar = super.diacriticTrap(target, char);
+    constructor() {
+        super(...arguments);
+        this.USE_VALIDATOR = true;
+    }
+    diacriticValidatorTrap(target, char) {
+        const cleanChar = char.replace(super.diacriticValidatorTrap(target, char), "");
         const diacritics = target.dictionary[char.toLowerCase()] || "";
         let charMatcher = "";
         let markerMatcher = "";
         if (cleanChar || diacritics) {
             charMatcher = `[${cleanChar}${diacritics}]`;
-            markerMatcher = `(?:[${this.LOWERCASE_MARKER_MATCHER}${this.UPPERCASE_MARKER_MATCHER}]*)`;
+            markerMatcher = this.INSENSITIVE_MARKER_MATCHER;
             if (target.isUpperCase(cleanChar)) {
                 charMatcher = charMatcher.toUpperCase();
             }
@@ -60,8 +85,8 @@ class DiacriticValidatorHandler extends DiacriticAbstractHandler {
 }
 
 class DiacriticInsensitiveValidatorHandler extends DiacriticValidatorHandler {
-    diacriticTrap(target, char) {
-        const { source } = super.diacriticTrap(target, char);
+    diacriticValidatorTrap(target, char) {
+        const { source } = super.diacriticValidatorTrap(target, char);
         return new RegExp(source, "ui");
     }
 }

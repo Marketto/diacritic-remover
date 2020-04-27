@@ -1,5 +1,10 @@
 
 # *diacritic-remover* changelog
+## 1.0.7
+* Implemented Unicode Marker Regexp compatibility (List of markers for JSCRE engine)
+* Tests are spread into multiple files
+* Implemented Tests and simulator for environments unsupporting Unicode Marker RegExp
+* Updated dependencies
 ## 1.0.6
 * Improved dictionaries
 * Optimized packages (js, mjs, iife-bundle)
