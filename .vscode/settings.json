@@ -7,5 +7,9 @@
     "mochaExplorer.exit": true,
     "mochaExplorer.files": ["test/**/*.js","test/**/*.ts"],
     "mochaExplorer.require": "ts-node/register",
-    "jshint.enable": false
+    "jshint.enable": false,
+    "eslint.alwaysShowStatus": true,
+    "eslint.format.enable": true,
+    "eslint.enable": true,
+    "editor.detectIndentation": false
 }
