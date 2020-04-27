@@ -1,5 +1,8 @@
 
 # *diacritic-remover* changelog
+## 1.0.7
+* Implemented Unicode Marker Regexp compatibility (Irregex engine)
+* Firefox 75 tested (w/o marker replace support)
 ## 1.0.6
 * Improved dictionaries
 * Optimized packages (js, mjs, iife-bundle)

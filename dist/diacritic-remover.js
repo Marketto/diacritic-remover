@@ -1,5 +1,5 @@
 /**
- * @marketto/diacritic-remover 1.0.6
+ * @marketto/diacritic-remover 1.0.7
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
  * ===========================================
@@ -14,10 +14,17 @@
 'use strict';
 
 class DiacriticAbstractHandler {
+    //protected MARKER_REGEXP: RegExp = new RegExp(`(${this.LOWERCASE_MARKER_MATCHER})`, "gui");
     constructor() {
         this.LOWERCASE_MARKER_MATCHER = "\\p{M}";
         this.UPPERCASE_MARKER_MATCHER = "\\P{M}";
-        this.MARKER_REGEXP = new RegExp(`(${this.LOWERCASE_MARKER_MATCHER})`, "gui");
+        this.MARKER_REGEXP = new RegExp("^$", "gi");
+        try {
+            this.MARKER_REGEXP = new RegExp(`(${this.LOWERCASE_MARKER_MATCHER})`, "gui");
+        }
+        catch (err) {
+            console.warn("Limited replacing features: Marker removal not available");
+        }
     }
     get(target, prop, receiver) {
         if (prop.length <= 1) {
