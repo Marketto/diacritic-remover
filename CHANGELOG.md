@@ -1,5 +1,7 @@
 
 # *diacritic-remover* changelog
+## 1.0.8
+* Fixed Script src in README
 ## 1.0.7
 * Implemented Unicode Marker Regexp compatibility (List of markers for JSCRE engine)
 * Tests are spread into multiple files
