@@ -44,9 +44,9 @@ const diacriticRemover = new DiacriticRemover();
 ```
 ### Script
 ```html
-<script src="https://unpkg.com/browse/@marketto/diacritic-remover/dist/diacritic-remover.bundle.min.js"></script>
+<script src="https://unpkg.com/@marketto/diacritic-remover/dist/diacritic-remover.bundle.min.js"></script>
 <script>
-    const diacriticRemover = new DiacriticRemover(...dictionaries)
+    const diacriticRemover = new DiacriticRemover();
 </script>
 ```
 
