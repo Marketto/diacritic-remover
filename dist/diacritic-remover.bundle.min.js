@@ -1,5 +1,5 @@
 /**
- * @marketto/diacritic-remover 1.0.7
+ * @marketto/diacritic-remover 1.0.8
  * Copyright (c) 2019, Marco Ricupero <marco.ricupero@gmail.com>
  * License: MIT
  * ===========================================
