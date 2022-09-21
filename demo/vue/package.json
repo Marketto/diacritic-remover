@@ -16,7 +16,7 @@
     "core-js": "^3.4.3",
     "roboto-fontface": "*",
     "vue": "^2.6.10",
-    "vuetify": "^2.1.0"
+    "vuetify": "^2.6.10"
   },
   "devDependencies": {
     "@vue/cli": "^4.1.1",
