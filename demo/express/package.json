@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "@marketto/diacritic-remover": "latest",
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   }
 }
