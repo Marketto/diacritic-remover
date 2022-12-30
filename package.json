@@ -29,7 +29,7 @@
     "@wessberg/rollup-plugin-ts": "^1.2.24",
     "chai": "^4.2.0",
     "cross-env": "^6.0.3",
-    "mocha": "^7.1.2",
+    "mocha": "^10.2.0",
     "nyc": "^14.1.1",
     "relcov": "^1.0.6",
     "rimraf": "^3.0.2",
